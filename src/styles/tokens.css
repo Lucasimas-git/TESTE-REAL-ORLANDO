@@ -1,0 +1,60 @@
+:root {
+  /* Cor — marca (paleta oficial da referência da Home) */
+  --cream: #F2E7D2;
+  --cream-2: #F6EAD8;
+  --orange: #E67E11;
+  --orange-gold: #F39A1E;
+  --orange-deep: #C36A0E;
+  --burgundy: #3C0708;
+  --burgundy-mid: #6E0E12;
+  --red: #C51F24;
+  --red-cta: #D8292F;
+  --brown-black: #130708;
+  --ink: #2A0F08;
+  --white: #F5EAD7;
+
+  /* Cor — papéis semânticos */
+  --surface-franguinn: var(--cream-2);
+  --surface-franguinn-deep: var(--cream);
+  --text-on-franguinn: var(--ink);
+  --accent-franguinn: var(--orange);
+  --accent-franguinn-deep: var(--orange-deep);
+  --accent-franguinn-gold: var(--orange-gold);
+
+  --surface-hamburguinn: var(--burgundy-mid);
+  --surface-hamburguinn-deep: var(--brown-black);
+  --text-on-hamburguinn: var(--white);
+  --accent-hamburguinn: var(--red);
+  --accent-hamburguinn-cta: var(--red-cta);
+
+  /* Tipografia */
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Espaçamento */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* Raio e sombra */
+  --radius-sm: 10px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-full: 999px;
+  --shadow-soft: 0 24px 60px -24px rgba(22, 13, 11, 0.45);
+  --shadow-soft-light: 0 24px 48px -24px rgba(106, 13, 13, 0.25);
+
+  /* Movimento */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+
+  /* Container */
+  --content-max: 1440px;
+}

@@ -1,0 +1,18 @@
+PROJETO CORRIGIDO
+
+Este ZIP já contém o código atual + assets finais nas pastas corretas.
+A pasta duplicada FRANGUINN_HAMBURGUINN_SITE_STARTER foi removida.
+node_modules também foi removido do ZIP.
+
+Depois de extrair, rode:
+npm install
+npm run dev
+
+Arquivos prioritários da Home:
+references/home-target-master.png
+public/assets/brand/franguinn-mascot.png
+public/assets/brand/hamburguinn-mascot.png
+public/assets/products/hero/franguinn-hero-product.png
+public/assets/products/hero/hamburguinn-hero-product.png
+
+Leia CLAUDE_ASSET_MAP.md antes de pedir alterações ao Claude.

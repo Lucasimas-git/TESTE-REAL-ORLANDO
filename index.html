@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Franguinn &amp; Hamburguinn — Dois mundos, um só lugar</title>
+  <meta
+    name="description"
+    content="Franguinn (frango frito) e Hamburguinn (smashburger): duas marcas de delivery, um só lugar. Escolha seu mundo e peça o seu."
+  />
+  <meta name="theme-color" content="#F5DDAF" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Open Graph / WhatsApp / redes sociais -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Franguinn & Hamburguinn — Dois mundos, um só lugar" />
+  <meta
+    property="og:description"
+    content="Franguinn (frango frito) e Hamburguinn (smashburger): duas marcas de delivery, um só lugar. Escolha seu mundo e peça o seu."
+  />
+  <meta property="og:image" content="%BASE_URL%assets/products/hero/franguinn-hero-product.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/base.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+  <link rel="stylesheet" href="/src/styles/home.css" />
+  <link rel="stylesheet" href="/src/styles/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <!-- TODO: Cardápio / Combos / Sobre / Contato ainda não existem como páginas —
+       a arquitetura atual só cobre Home, /franguinn/ e /hamburguinn/. Os links
+       abaixo são visuais nesta fase e não quebram (apontam para "#"). -->
+  <header class="site-nav">
+    <nav aria-label="Navegação principal">
+      <ul class="site-nav__list">
+        <li><a href="./" class="site-nav__link is-active">Home</a></li>
+        <li><a href="#" class="site-nav__link">Cardápio</a></li>
+        <li><a href="#" class="site-nav__link"><span class="nav-combos-left">Com</span><span class="nav-combos-right">bos</span></a></li>
+        <li><a href="#" class="site-nav__link">Sobre</a></li>
+        <li><a href="#" class="site-nav__link">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <main id="main" class="split-hero">
+    <div class="split-seam" aria-hidden="true"></div>
+    <div class="hero-smoke hero-smoke--1" aria-hidden="true"></div>
+    <div class="hero-smoke hero-smoke--2" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+
+    <div class="split-title-overlay">
+      <h1 class="split-title">
+        <span class="split-title-line split-title-line--mundos">Dois mundos.</span>
+        <span class="split-title-line split-title-line--lugar">Um só lugar.</span>
+      </h1>
+      <p class="split-title-sub">Franguinn &amp; Hamburguinn. Sabores únicos, feitos para você.</p>
+    </div>
+
+    <section class="side side--franguinn" aria-labelledby="franguinn-heading">
+      <div class="side__watermark side__watermark--franguinn" aria-hidden="true"></div>
+      <div class="side__floor side__floor--franguinn" aria-hidden="true"></div>
+      <div class="side__steam side__steam--1" aria-hidden="true"></div>
+      <div class="side__steam side__steam--2" aria-hidden="true"></div>
+      <div class="side__crumbs" aria-hidden="true"></div>
+
+      <div class="side__top">
+        <div class="brand-mark brand-mark--franguinn brand-mark--stacked">
+          <span class="brand-mark__ring">
+            <img class="brand-mark__mascot" src="/assets/brand/franguinn-mascot.webp" alt="Mascote Franguinn, um frango sorridente" width="92" height="92" />
+          </span>
+          <span class="brand-mark__text">
+            <span id="franguinn-heading" class="brand-mark__name">Franguinn</span>
+            <span class="brand-mark__tagline">Frango frito delivery</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="side__product">
+        <div class="side__product-shadow" aria-hidden="true"></div>
+        <div class="side__product-glow" aria-hidden="true"></div>
+        <img
+          class="side__product-img"
+          src="/assets/products/hero/franguinn-hero-product.webp"
+          alt="Sanduíche de frango crocante Franguinn, com queijo derretido e salada"
+          loading="eager"
+          fetchpriority="high"
+          width="1300"
+          height="867"
+        />
+      </div>
+
+      <p class="side__pitch">
+        <span>Crocante,</span>
+        <span>suculento,</span>
+        <span>irresistível.</span>
+      </p>
+
+      <div class="side__cta-wrap">
+        <a class="cta cta--franguinn" href="franguinn/">
+          Entrar no Franguinn
+          <span class="cta__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="side side--hamburguinn" aria-labelledby="hamburguinn-heading">
+      <div class="side__watermark side__watermark--hamburguinn" aria-hidden="true"></div>
+      <div class="side__floor side__floor--hamburguinn" aria-hidden="true"></div>
+      <div class="side__smoke side__smoke--1" aria-hidden="true"></div>
+      <div class="side__smoke side__smoke--2" aria-hidden="true"></div>
+      <div class="side__smoke side__smoke--3" aria-hidden="true"></div>
+      <div class="side__embers" aria-hidden="true"></div>
+
+      <div class="side__top">
+        <div class="brand-mark brand-mark--hamburguinn brand-mark--stacked">
+          <span class="brand-mark__ring brand-mark__ring--hamburguinn">
+            <img class="brand-mark__mascot" src="/assets/brand/hamburguinn-mascot.webp" alt="Mascote Hamburguinn, um hambúrguer sorridente" width="92" height="92" />
+          </span>
+          <span class="brand-mark__text">
+            <span id="hamburguinn-heading" class="brand-mark__name">Hamburguinn</span>
+            <span class="brand-mark__tagline">Smashburger</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="side__product">
+        <div class="side__product-shadow" aria-hidden="true"></div>
+        <div class="side__product-glow" aria-hidden="true"></div>
+        <img
+          class="side__product-img"
+          src="/assets/products/hero/hamburguinn-hero-product.webp"
+          alt="Hambúrguer Hamburguinn esmashado, com queijo derretido e cebola caramelizada"
+          loading="eager"
+          fetchpriority="high"
+          width="1300"
+          height="867"
+        />
+      </div>
+
+      <p class="side__pitch">
+        <span>Smashed,</span>
+        <span>toasted,</span>
+        <span>apaixonante.</span>
+      </p>
+
+      <div class="side__cta-wrap">
+        <a class="cta cta--hamburguinn" href="hamburguinn/">
+          Entrar no Hamburguinn
+          <span class="cta__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="center-badge" aria-hidden="true">
+      <svg class="center-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path
+          d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="center-badge__line">Dois sabores</span>
+      <span class="center-badge__line">Uma experiência</span>
+    </div>
+  </main>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

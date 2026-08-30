@@ -1,0 +1,131 @@
+/* Botão CTA em pílula, reutilizável nas duas marcas via modificador de cor */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.78rem, 0.74rem + 0.16vw, 0.85rem);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard);
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+}
+
+.cta:active {
+  transform: translateY(0);
+}
+
+.cta__arrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.cta:hover .cta__arrow,
+.cta:focus-visible .cta__arrow {
+  transform: translateX(5px);
+}
+
+.cta--franguinn {
+  background: linear-gradient(180deg, #E67A05 0%, #DF7005 55%, #C36200 100%);
+  color: #FFF2DB;
+  box-shadow: var(--shadow-soft-light);
+}
+
+.cta--franguinn:hover {
+  background: linear-gradient(180deg, #EC8412 0%, #DF7005 100%);
+}
+
+.cta--hamburguinn {
+  background: linear-gradient(180deg, #B91822 0%, #A9121C 55%, #6E0A0E 100%);
+  color: #FFF0DD;
+  box-shadow: var(--shadow-soft);
+}
+
+.cta--hamburguinn:hover {
+  background: linear-gradient(180deg, #C21F29 0%, #A9121C 100%);
+}
+
+/* Selo de marca circular: recorta o quadrado-fonte do arquivo original em um círculo,
+   removendo os cantos escuros do arquivo de origem sem redesenhar a arte. */
+.seal {
+  display: block;
+  width: var(--seal-size, 84px);
+  height: var(--seal-size, 84px);
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.seal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Marca (mascote em PNG transparente + wordmark em texto nativo) */
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brand-mark__mascot {
+  display: block;
+  width: var(--mascot-size, 92px);
+  height: var(--mascot-size, 92px);
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 8px 14px rgba(8, 4, 3, 0.3));
+}
+
+/* Anel fino ao redor do mascote da Franguinn, ecoando o selo circular da marca */
+.brand-mark__ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--mascot-size, 92px) + 24px);
+  height: calc(var(--mascot-size, 92px) + 24px);
+  border-radius: 50%;
+  border: 2px solid rgba(230, 126, 17, 0.55);
+  background: rgba(255, 249, 239, 0.35);
+  flex-shrink: 0;
+}
+
+.brand-mark__ring .brand-mark__mascot {
+  width: var(--mascot-size, 92px);
+  height: var(--mascot-size, 92px);
+}
+
+.brand-mark__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.brand-mark__name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 1.25rem + 1.15vw, 2.15rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.brand-mark__tagline {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.8;
+}

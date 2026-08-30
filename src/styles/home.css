@@ -1,0 +1,842 @@
+.split-hero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- Navegação superior ---------- */
+/* Sem pílula: leve, apenas texto sobre o herói. Cada item herda a cor do
+   lado em que visualmente pousa (3 itens sobre o creme, 2 sobre o vinho),
+   como na referência. */
+
+.site-nav {
+  position: fixed;
+  top: clamp(1.5rem, 1.2rem + 1.6vh, 2.25rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.6rem, 1.3rem + 1.5vw, 3rem);
+}
+
+.site-nav__link {
+  position: relative;
+  display: inline-block;
+  padding: var(--space-1) 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.78rem, 0.73rem + 0.25vw, 0.9rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #2A1109;
+  text-shadow: 0 0 1px rgba(255, 248, 235, 0.85), 0 0 9px rgba(255, 248, 235, 0.5);
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+.site-nav__list li:nth-child(4) .site-nav__link,
+.site-nav__list li:nth-child(5) .site-nav__link {
+  color: #F5E6CB;
+  text-shadow: 0 0 1px rgba(20, 4, 4, 0.8), 0 0 9px rgba(20, 4, 4, 0.5);
+}
+
+/* "COMBOS" é o item central da lista (5 itens, ímpar) — por simetria ele
+   cai quase exatamente sobre a costura, onde o fundo alterna de claro
+   para escuro sob o mesmo texto. Em vez de empilhar halo (ficava
+   artificial), a palavra é dividida em dois spans que seguem a MESMA
+   paleta de HOME/CARDÁPIO (esquerda) e SOBRE/CONTATO (direita) — a
+   própria técnica de corte de cor da headline, aplicada ao menu. */
+.nav-combos-left {
+  color: #2A1109;
+}
+
+/* "BOS" cai bem em cima da faixa borrada da costura (nem claro nem
+   escuro puro), onde um halo escuro sozinho não ajuda em nada — por
+   isso o halo aqui é claro (levanta o texto contra o fundo incerto),
+   mais discreto que a versão "exagerada" anterior (raio máx. 6px, não
+   12px, e sem 3 camadas empilhadas). */
+.nav-combos-right {
+  color: #F5E6CB;
+  text-shadow: 0 0 1px rgba(255, 248, 235, 0.55), 0 0 6px rgba(255, 248, 235, 0.3), 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.site-nav__link:hover {
+  opacity: 0.7;
+}
+
+/* Nenhum item deve exibir box/pill — nem o outline genérico do foco global.
+   O único indicador (ativo ou focado) é o traço fino, igual à referência. */
+.site-nav__link:focus-visible {
+  outline: none;
+  border-radius: 0;
+  opacity: 0.7;
+}
+
+.site-nav__link.is-active::after,
+.site-nav__link:focus-visible::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--orange);
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   CAMADAS DO HERO — mapa de z-index
+
+   Dentro de cada .side (contexto de empilhamento isolado):
+     0 — background cromático (via background-image do próprio .side)
+     0 — marca d'água (mascote gigante em mask-image)
+     0 — piso / chão (gradiente inferior)
+     1 — fumaça (só Hamburguinn) e farelos/brasas
+     1 — sombra + glow do produto
+     2 — imagem do produto
+     3 — marca (logo+nome), slogan lateral, CTA
+
+   Em .split-hero (nível do herói inteiro):
+     (auto) — as duas .side, como blocos únicos
+     2 — .split-seam (costura central, atrás do título)
+     3 — .hero-smoke (fumaça que atravessa levemente a costura)
+     5 — título + subtítulo
+     6 — selo central
+     8 — grão/textura geral (por cima de tudo dentro do herói)
+     10 — navegação (position: fixed, fora do herói)
+   ========================================================================== */
+
+/* ---------- Metades Franguinn / Hamburguinn ---------- */
+
+.side {
+  position: relative;
+  flex: 1 1 50%;
+  min-width: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Base cromática + grandes gradientes ambientais. O tom quente/vinho fica
+   concentrado perto do produto e do chão; a área atrás da headline
+   (topo) permanece mais clara/mais escura pura para não brigar com o
+   contraste do título. Paleta alinhada à referência: tons quentes creme/
+   dourado à esquerda, nunca uma "parede laranja" inteira. */
+.side--franguinn {
+  color: var(--text-on-franguinn);
+  background-color: #F5DDAF;
+  background-image:
+    radial-gradient(ellipse 62% 48% at 46% 92%, rgba(219, 116, 12, 0.42) 0%, transparent 68%),
+    radial-gradient(ellipse 46% 34% at 50% 62%, rgba(232, 138, 22, 0.16) 0%, transparent 72%),
+    linear-gradient(to top, rgba(193, 106, 14, 0.4) 0%, rgba(193, 106, 14, 0.18) 14%, transparent 40%),
+    radial-gradient(ellipse 76% 58% at 22% 4%, rgba(248, 231, 195, 0.85) 0%, transparent 64%),
+    radial-gradient(ellipse 55% 70% at 100% 45%, rgba(111, 50, 21, 0.14) 0%, transparent 72%),
+    linear-gradient(168deg, #F8E7C3 0%, #F5DDAF 52%, #F1C57B 100%);
+}
+
+/* Marca d'água — silhueta gigante do mascote, monocromática e quase
+   imperceptível, via CSS mask (não a imagem colorida). É textura de
+   cenário, não um segundo logo — por isso opacidade muito baixa. */
+/* mask-mode: alpha é essencial aqui. Sem ele, o navegador usa luminância
+   por padrão — e como o mascote do Hamburguinn é desenhado quase todo em
+   tons bem escuros, a máscara por luminância só revela os pixels claros
+   de borda/brilho, resultando numa "silhueta branca fantasma" em vez do
+   recorte sólido colorido pretendido. Com alpha, a máscara segue a forma
+   real do PNG (opaco/transparente), não o brilho de cada pixel. */
+.side__watermark {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  mask-mode: alpha;
+}
+
+/* Rebaixada demais na rodada anterior (quase invisível). Reposicionada
+   para baixo/fora do bloco de marca (que ocupa o canto superior-esquerdo
+   até ~22% de altura) para não competir com o logo principal, e com
+   opacidade suficiente para realmente se perceber no fundo. */
+.side__watermark--franguinn {
+  top: 8%;
+  left: -20%;
+  width: 56%;
+  height: 118%;
+  background-color: #C17A2E;
+  -webkit-mask-image: url('/assets/brand/franguinn-mascot-watermark.webp');
+  mask-image: url('/assets/brand/franguinn-mascot-watermark.webp');
+  -webkit-mask-position: left top;
+  mask-position: left top;
+  /* Era 0.085 — quase metade da opacidade da marca d'água do Hamburguinn
+     (0.17), por isso praticamente sumia enquanto a do outro lado tinha
+     presença visível. */
+  opacity: 0.16;
+}
+
+/* Piso / chão: os 22–30% inferiores ganham uma superfície própria, para
+   o produto parecer apoiado em vez de flutuando. Sem linha horizontal —
+   tudo por gradiente. */
+.side__floor {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 28%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.side__floor--franguinn {
+  background:
+    radial-gradient(ellipse 64% 100% at 48% 100%, rgba(200, 122, 20, 0.5) 0%, transparent 72%),
+    linear-gradient(to top, rgba(184, 104, 16, 0.34) 0%, transparent 100%);
+}
+
+/* Farelos: pequenos pontos dispersos dourados/marrons perto do chão,
+   variando tamanho e opacidade — sem padrão repetitivo perceptível. */
+.side__crumbs {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 24%;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 70%, rgba(120, 62, 12, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 20% 40%, rgba(180, 100, 20, 0.5), transparent 60%),
+    radial-gradient(2px 2px at 30% 85%, rgba(140, 74, 16, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 38% 55%, rgba(200, 130, 30, 0.45), transparent 60%),
+    radial-gradient(1.4px 1.4px at 46% 78%, rgba(120, 62, 12, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 54% 35%, rgba(180, 100, 20, 0.4), transparent 60%),
+    radial-gradient(1.8px 1.8px at 62% 66%, rgba(140, 74, 16, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 70% 90%, rgba(200, 130, 30, 0.4), transparent 60%),
+    radial-gradient(1.2px 1.2px at 78% 45%, rgba(120, 62, 12, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 86% 72%, rgba(180, 100, 20, 0.4), transparent 60%),
+    radial-gradient(1.6px 1.6px at 92% 30%, rgba(140, 74, 16, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 8% 20%, rgba(200, 130, 30, 0.3), transparent 60%);
+}
+
+/* Vapor/calor sutil do lado Franguinn — o Hamburguinn já tinha fumaça
+   (.side__smoke) dando atmosfera ao redor do produto; o lado Franguinn
+   ficava "seco" em comparação. Frango frito pede vapor/calor (mais
+   claro e difuso) em vez da fumaça acinzentada do churrasco — mesma
+   ideia, paleta e movimento diferentes. */
+.side__steam {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(24px);
+  opacity: 0.7;
+}
+
+.side__steam--1 {
+  bottom: 8%;
+  left: 14%;
+  width: 46%;
+  height: 60%;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(255, 244, 224, 0.34), transparent 72%);
+}
+
+.side__steam--2 {
+  top: -2%;
+  left: 4%;
+  width: 32%;
+  height: 40%;
+  background: radial-gradient(ellipse 55% 100% at 45% 0%, rgba(255, 240, 214, 0.24), transparent 74%);
+  filter: blur(22px);
+  animation: smoke-drift 20s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side__steam--2 {
+    animation: none;
+  }
+}
+
+/* Base cromática Hamburguinn: preto/vinho bem escuro; vermelho só como
+   luz localizada perto do produto e do chão — nunca uma parede vermelha. */
+.side--hamburguinn {
+  color: var(--text-on-hamburguinn);
+  background-color: #190304;
+  background-image:
+    radial-gradient(ellipse 60% 44% at 46% 90%, rgba(122, 15, 20, 0.5) 0%, transparent 66%),
+    radial-gradient(ellipse 40% 30% at 48% 60%, rgba(160, 24, 28, 0.14) 0%, transparent 72%),
+    linear-gradient(to top, rgba(90, 10, 14, 0.55) 0%, rgba(74, 7, 10, 0.26) 14%, transparent 40%),
+    radial-gradient(ellipse 64% 56% at 86% -6%, rgba(18, 2, 3, 0.95) 0%, transparent 62%),
+    radial-gradient(ellipse 50% 60% at 0% 42%, rgba(114, 13, 18, 0.12) 0%, transparent 70%),
+    linear-gradient(200deg, #250406 0%, #190304 60%, #120203 100%);
+}
+
+/* Vermelho-vinho profundo e saturado (não o burgundy quase-preto do
+   background) — com mask-mode: alpha correto, isso agora lê como a
+   própria marca em segundo plano, nunca uma silhueta branca genérica. */
+.side__watermark--hamburguinn {
+  top: 3%;
+  right: -9%;
+  width: 50%;
+  height: 112%;
+  background-color: #8C0F16;
+  -webkit-mask-image: url('/assets/brand/hamburguinn-mascot-watermark.webp');
+  mask-image: url('/assets/brand/hamburguinn-mascot-watermark.webp');
+  -webkit-mask-position: right top;
+  mask-position: right top;
+  opacity: 0.17;
+}
+
+.side__floor--hamburguinn {
+  background:
+    radial-gradient(ellipse 64% 100% at 50% 100%, rgba(20, 3, 4, 0.75) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 50% 100%, rgba(122, 15, 20, 0.22) 0%, transparent 75%),
+    linear-gradient(to top, rgba(8, 1, 2, 0.6) 0%, transparent 100%);
+}
+
+/* Fumaça contida no lado Hamburguinn: 3 camadas com formas e posições
+   diferentes, atrás do produto (z-index 1). Extremamente sutil — nunca
+   uma nuvem branca opaca. */
+.side__smoke {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(26px);
+  opacity: 0.78;
+}
+
+.side__smoke--1 {
+  bottom: 6%;
+  right: 16%;
+  width: 50%;
+  height: 66%;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(255, 234, 214, 0.32), transparent 72%);
+}
+
+.side__smoke--2 {
+  bottom: 28%;
+  right: 4%;
+  width: 38%;
+  height: 50%;
+  background: radial-gradient(ellipse 55% 100% at 40% 100%, rgba(255, 220, 198, 0.27), transparent 70%);
+  filter: blur(32px);
+}
+
+/* Presença extra perto do topo-direito, pedida explicitamente na
+   rodada de refinamento — fumaça subindo perto da marca/mascote. */
+.side__smoke--3 {
+  top: -2%;
+  right: 4%;
+  width: 34%;
+  height: 42%;
+  background: radial-gradient(ellipse 55% 100% at 55% 0%, rgba(255, 230, 210, 0.22), transparent 74%);
+  filter: blur(24px);
+  animation: smoke-drift 18s ease-in-out infinite;
+}
+
+@keyframes smoke-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.5; }
+  50% { transform: translate(-2%, -4%); opacity: 0.65; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side__smoke--3 {
+    animation: none;
+  }
+}
+
+/* Brasas: poucas, variando tamanho/intensidade/blur, concentradas perto
+   do produto e da base — nunca uma grade uniforme de pontos. */
+.side__embers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 62% 74%, rgba(233, 61, 67, 1), transparent 60%),
+    radial-gradient(1.4px 1.4px at 75% 66%, rgba(214, 48, 53, 0.85), transparent 60%),
+    radial-gradient(2.4px 2.4px at 55% 82%, rgba(233, 61, 67, 0.75), transparent 65%),
+    radial-gradient(1.4px 1.4px at 82% 50%, rgba(214, 48, 53, 0.75), transparent 60%),
+    radial-gradient(1.6px 1.6px at 68% 90%, rgba(233, 61, 67, 0.6), transparent 60%),
+    radial-gradient(1.4px 1.4px at 88% 30%, rgba(214, 48, 53, 0.6), transparent 60%),
+    radial-gradient(1.8px 1.8px at 40% 20%, rgba(233, 61, 67, 0.5), transparent 60%),
+    radial-gradient(1.2px 1.2px at 91% 14%, rgba(214, 48, 53, 0.55), transparent 60%),
+    radial-gradient(1.6px 1.6px at 30% 62%, rgba(233, 61, 67, 0.45), transparent 60%);
+}
+
+/* ---------- Costura central (fusão dos dois mundos) ---------- */
+/* Faixa larga, atrás do título/subtítulo/selo, na frente das duas .side.
+   Em vez de uma banda reta com blend "multiply" (que lia como uma régua
+   escura), várias manchas radiais com centro levemente deslocado (47%
+   / 53% alternando) em alturas diferentes criam uma borda orgânica e
+   enevoada — mais fumaça/atmosfera do que uma linha de corte. */
+.split-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(180px, 15vw, 280px);
+  z-index: 2;
+  pointer-events: none;
+  filter: blur(36px);
+  background:
+    radial-gradient(ellipse 58% 20% at 47% 4%,  rgba(50, 18, 12, 0.32), transparent 72%),
+    radial-gradient(ellipse 62% 24% at 53% 18%, rgba(42, 14, 10, 0.28), transparent 74%),
+    radial-gradient(ellipse 60% 22% at 46% 34%, rgba(48, 17, 12, 0.3),  transparent 72%),
+    radial-gradient(ellipse 64% 26% at 54% 50%, rgba(40, 13, 10, 0.34), transparent 74%),
+    radial-gradient(ellipse 62% 24% at 47% 66%, rgba(46, 16, 11, 0.36), transparent 72%),
+    radial-gradient(ellipse 65% 28% at 53% 82%, rgba(36, 11, 9, 0.4),   transparent 74%),
+    radial-gradient(ellipse 68% 32% at 49% 96%, rgba(28, 7, 7, 0.44),   transparent 76%),
+    linear-gradient(90deg,
+      rgba(245, 221, 175, 0) 0%,
+      rgba(150, 78, 40, 0.16) 32%,
+      rgba(70, 26, 18, 0.24) 50%,
+      rgba(40, 10, 10, 0.16) 68%,
+      rgba(25, 3, 4, 0) 100%
+    );
+}
+
+/* Fumaça de nível herói: fininha, atravessa levemente a costura vinda do
+   lado Hamburguinn — nunca sobre marca/CTA/produto, só na faixa superior
+   central. */
+.hero-smoke {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(34px);
+}
+
+.hero-smoke--1 {
+  top: -8%;
+  left: 42%;
+  width: 28%;
+  height: 52%;
+  background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(255, 232, 212, 0.22), transparent 74%);
+}
+
+.hero-smoke--2 {
+  top: 4%;
+  left: 51%;
+  width: 20%;
+  height: 36%;
+  background: radial-gradient(ellipse 50% 100% at 50% 0%, rgba(255, 232, 212, 0.17), transparent 76%);
+  animation: smoke-drift 22s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-smoke--2 {
+    animation: none;
+  }
+}
+
+/* Grão/textura geral: extremamente sutil, unifica a cena sem parecer
+   filtro de ruído digital pesado. */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background-image: url('/assets/ambient/grain.svg');
+  background-size: 180px 180px;
+  opacity: 0.075;
+  mix-blend-mode: overlay;
+}
+
+/* Produto: recorte transparente "pousado" na cena, sem card/moldura.
+   Camadas: sombra de chão -> glow -> imagem (object-fit: contain).
+   O container não vai até o rodapé absoluto — isso abre a faixa de
+   "piso" onde o produto se apoia, em vez de parecer recortado e colado
+   na borda da página. */
+.side__product {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 4%;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.side__product-glow {
+  position: absolute;
+  bottom: 2%;
+  width: min(56vw, 500px);
+  height: min(56vw, 500px);
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 1;
+}
+
+.side--franguinn .side__product-glow {
+  background: radial-gradient(circle, rgba(232, 117, 8, 0.4), transparent 70%);
+}
+
+.side--hamburguinn .side__product-glow {
+  background: radial-gradient(circle, rgba(114, 13, 18, 0.4), transparent 70%);
+}
+
+/* Sombra de contato elíptica: larga, baixa, bastante blur — o que faz o
+   produto parecer realmente apoiado no chão, em vez do halo de
+   drop-shadow ao redor do PNG. */
+.side__product-shadow {
+  position: absolute;
+  bottom: -1%;
+  width: min(42vw, 380px);
+  height: 48px;
+  border-radius: 50%;
+  z-index: 1;
+  filter: blur(11px);
+}
+
+.side--franguinn .side__product-shadow {
+  background: radial-gradient(ellipse 50% 100%, rgba(70, 34, 8, 0.5), transparent 75%);
+  transform: translateX(4%);
+}
+
+.side--hamburguinn .side__product-shadow {
+  width: min(44vw, 392px);
+  background: radial-gradient(ellipse 50% 100%, rgba(4, 2, 2, 0.6), transparent 75%);
+  transform: translateX(-7%);
+}
+
+/* Base compartilhada entre os dois produtos (mesma lógica dimensional).
+   O Hamburguinn recebe um reforço de ~4% de largura e avança mais para
+   o centro — na composição fotográfica real, a carne escura do
+   Hamburguinn ocupa proporcionalmente menos "peso visual" que o dourado
+   vibrante do Franguinn no mesmo canvas, então precisa desse empurrão
+   para os dois lerem como equivalentes em destaque. */
+.side__product-img {
+  position: relative;
+  z-index: 2;
+  width: clamp(290px, 35vw, 615px);
+  max-width: 84%;
+  max-height: 58vh;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: auto;
+  transition: transform 420ms var(--ease-standard);
+}
+
+.side--franguinn .side__product-img {
+  transform: translateX(4%);
+  filter: drop-shadow(0 14px 14px rgba(90, 40, 10, 0.22)) saturate(1.06) brightness(1.02);
+}
+
+.side--hamburguinn .side__product-img {
+  width: clamp(292px, 35.2vw, 617px);
+  transform: translateX(-7%);
+  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.4)) saturate(1.08) contrast(1.05) brightness(1.03);
+}
+
+.side__product-img:hover {
+  transform: translateX(4%) scale(1.02);
+}
+
+.side--hamburguinn .side__product-img:hover {
+  transform: translateX(-7%) scale(1.02);
+}
+
+/* Marca — ancorada no canto externo, próxima do topo */
+.side__top {
+  position: absolute;
+  top: clamp(4.75rem, 4rem + 3vh, 6rem);
+  z-index: 3;
+}
+
+.side--franguinn .side__top {
+  left: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+}
+
+.side--hamburguinn .side__top {
+  right: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+}
+
+.brand-mark--stacked {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+/* Mascote Franguinn com presença semelhante ao anel do Hamburguinn —
+   nem grande demais, nem a borda dominando o conjunto. */
+.brand-mark--franguinn {
+  --mascot-size: 92px;
+}
+
+.brand-mark--stacked .brand-mark__text {
+  align-items: flex-start;
+}
+
+/* Hierarquia: mascote -> FRANGUINN forte (marrom/preto quente, nunca
+   preto puro) -> tagline discreta em opacidade reduzida. */
+.side--franguinn .brand-mark__name {
+  color: #2A1109;
+}
+
+.side--franguinn .brand-mark__tagline {
+  color: rgba(42, 17, 9, 0.72);
+  opacity: 1;
+}
+
+/* Paridade com o anel do Franguinn: sem ele, o bloco de marca do
+   Hamburguinn (mascote solto + texto) lia como mais leve/isolado ao
+   lado do badge circular do Franguinn. Mesma gramática visual, tonalidade
+   vinho em vez de laranja. */
+.brand-mark__ring--hamburguinn {
+  border-color: rgba(216, 41, 47, 0.5);
+  background: rgba(30, 5, 6, 0.4);
+}
+
+.side--hamburguinn .brand-mark--stacked {
+  align-items: flex-end;
+}
+
+.side--hamburguinn .brand-mark--stacked .brand-mark__text {
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* Wordmark da Hamburguinn em creme (não vermelho sobre vinho, que some
+   de contraste) — SMASHBURGER assume o vermelho vivo da marca. */
+.side--hamburguinn .brand-mark__name {
+  color: #F6E7CB;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+
+.side--hamburguinn .brand-mark__tagline {
+  color: #E12831;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* O mascote é uma ilustração escura sobre um fundo agora quase preto —
+   sem card/box/círculo, um contorno claro fino + brilho quente contido
+   devolve presença sem virar aura. O drop-shadow de raio quase zero
+   segue o alfa do PNG e desenha um contorno, não um halo. */
+.side--hamburguinn .brand-mark__mascot {
+  filter:
+    brightness(1.25)
+    saturate(1.2)
+    contrast(1.1)
+    drop-shadow(0 0 1px rgba(245, 230, 203, 0.9))
+    drop-shadow(0 0 10px rgba(225, 40, 49, 0.4))
+    drop-shadow(0 3px 8px rgba(0, 0, 0, 0.55));
+}
+
+/* Slogan — acima do produto, com respiro real em relação ao lanche.
+   Bug real encontrado: com top:46%, em QUALQUER janela de desktop com
+   altura comum (1366×768, 1440×900, 1600×900 com barra do navegador,
+   etc. — não só telas ultrawide curtas) o texto sobrepunha o topo do
+   pão. A internet gate de "min-aspect-ratio:2/1" nunca disparava nesses
+   casos (16:9 real é ~1.78:1, nunca chega a 2:1) — por isso o bug
+   passava despercebido nos testes anteriores em janelas mais altas.
+   38% dá folga mesmo nas alturas mais curtas comuns, sem colidir com a
+   marca acima em nenhuma altura testada (768–1440px). */
+.side__pitch {
+  position: absolute;
+  top: 38%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: clamp(1.3rem, 1.1rem + 1.1vw, 1.8rem);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  /* Camada justa e escura (funciona como um contorno) somada ao halo
+     original — o laranja liso sozinho ficava com contraste baixo (~2:1)
+     contra o fundo creme/dourado claro, principalmente nas áreas mais
+     claras do gradiente. */
+  text-shadow: 0 1px 2px rgba(40, 14, 0, 0.45), 0 2px 18px rgba(0, 0, 0, 0.2);
+}
+
+.side--franguinn .side__pitch {
+  left: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+  color: #C25802;
+  align-items: flex-start;
+}
+
+.side--hamburguinn .side__pitch {
+  /* Era clamp(3.25rem,...,6.5rem) — bem mais recuado que o "right" da
+     logo/CTA (clamp(1.75rem,...,3.75rem)), por isso o texto caía mais pra
+     dentro, em cima do hambúrguer, em vez de alinhado com o "N" final de
+     HAMBURGUINN. Agora usa o mesmo offset da logo/CTA acima e abaixo. */
+  right: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+  color: #E12831;
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* CTA — o mais próximo possível da base da composição */
+.side__cta-wrap {
+  position: absolute;
+  bottom: clamp(1.1rem, 0.85rem + 2.4vh, 1.9rem);
+  z-index: 3;
+}
+
+.side--franguinn .side__cta-wrap {
+  left: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+}
+
+.side--hamburguinn .side__cta-wrap {
+  right: clamp(1.75rem, 1.25rem + 3vw, 3.75rem);
+}
+
+/* ---------- Título central ---------- */
+
+.split-title-overlay {
+  position: absolute;
+  top: clamp(4.5rem, 3.75rem + 8vh, 8.25rem);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 var(--space-5);
+  pointer-events: none;
+  text-align: center;
+}
+
+/* Bloco mais estreito e centrado: reforça o "miolo" como âncora dominante
+   da composição em vez de esticar de ponta a ponta. Como o corte de cor
+   é feito por gradiente a 50% do próprio bloco, e o bloco continua
+   centralizado no viewport, o encaixe letra-a-letra da referência (ex.:
+   "M" escuro / "UNDOS." claro) se mantém intacto. */
+.split-title {
+  width: 100%;
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.split-title-line {
+  display: block;
+  width: 100%;
+  font-weight: 900;
+  font-size: clamp(2.9rem, 2.1rem + 5.8vw, 6.75rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A tentativa anterior de "suavizar" com 3 tons intermediários (marrom
+   -> dourado -> creme) virou uma mancha visualmente poluída bem no meio
+   da palavra. Voltamos a dois blocos de cor sólidos e bem resolvidos,
+   com só uma transição curta (2% de largura) entre eles — o suficiente
+   para não ser um corte de x-acto, sem criar uma faixa de cor estranha
+   no meio da tipografia. */
+.split-title-line--mundos {
+  background-image: linear-gradient(
+    90deg,
+    #2A1109 0%,
+    #2A1109 49%,
+    #F5E6CB 51%,
+    #F5E6CB 100%
+  );
+}
+
+.split-title-line--lugar {
+  background-image: linear-gradient(
+    90deg,
+    #E36F05 0%,
+    #E36F05 49%,
+    #D8202B 51%,
+    #D8202B 100%
+  );
+}
+
+/* O corte de duas cores (igual ao título) funciona bem em letras enormes,
+   mas em texto corrido menor cortava no meio de uma palavra ("SAB|ORES")
+   — lia como um bug visual, não como estilo. Cor única (o mesmo ink
+   escuro do lado esquerdo) nos dois lados; o halo claro no text-shadow
+   substitui a mudança de cor como reforço de leitura sobre o fundo
+   escuro do Hamburguinn, sem quebrar a palavra ao meio. */
+.split-title-sub {
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  margin: var(--space-3) auto 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.75rem, 0.68rem + 0.32vw, 0.9rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  white-space: nowrap;
+  /* Nem o ink escuro (sumia no lado Hamburguinn) nem o corte de duas
+     cores (cortava a palavra ao meio) se sustentavam bem. Um âmbar único
+     com sombra escura E halo claro ao mesmo tempo funciona nos dois
+     fundos — e continua legível mesmo se algum dia o texto tocar a
+     própria foto do produto (o halo/sombra não depende de qual fundo
+     está por trás). */
+  color: #D98B1C;
+  text-shadow:
+    0 1px 2px rgba(35, 12, 0, 0.55),
+    0 0 10px rgba(245, 230, 203, 0.4),
+    0 0 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Selo central inferior ---------- */
+
+.center-badge {
+  position: absolute;
+  bottom: clamp(1rem, 0.8rem + 1.6vh, 1.6rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: clamp(88px, 6.5vw, 112px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: #160708;
+  border: 1px solid rgba(201, 144, 37, 0.55);
+  box-shadow: 0 12px 26px -10px rgba(0, 0, 0, 0.65), inset 0 0 0 1px rgba(201, 144, 37, 0.16);
+  color: #F6E7CB;
+  text-align: center;
+  padding: var(--space-2);
+}
+
+.center-badge__icon {
+  width: 17px;
+  height: 17px;
+  color: #D8A632;
+  margin-bottom: 2px;
+}
+
+.center-badge__line {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* ---------- Segurança para desktop ultrawide/baixo (ex.: 1920x800) ---------- */
+/* A composição em 16:9 (alvo principal) não muda aqui. Isto só entra em
+   telas bem mais largas que altas, onde a vh encolhe tanto que a
+   headline pode encostar no topo do produto. */
+@media (min-aspect-ratio: 2/1) and (max-height: 860px) {
+  .split-title-overlay {
+    top: clamp(3.5rem, 3rem + 4vh, 6rem);
+  }
+
+  .side__product-img {
+    width: clamp(420px, 30vw, 560px);
+  }
+}

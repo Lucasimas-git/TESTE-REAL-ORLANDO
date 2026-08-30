@@ -1,0 +1,274 @@
+/* Tablet (768–1023px): mantém o split 50/50, aperta espaçamentos e o
+   tamanho do produto/título para caber sem perder a composição.
+
+   Bug real encontrado aqui: o topo (título+subtítulo) e a marca (logo)
+   são posicionados de forma independente, cada um com sua própria fórmula
+   clamp() baseada em vh/vw calibrada para o formato widescreen do desktop
+   (~800–900px de altura). Em tablets retrato (768×1024, mais alto que
+   largo), essas fórmulas convergem: o subtítulo passava POR CIMA da
+   tagline da marca (texto ilegível, sobreposto). Os overrides abaixo
+   dão mais respiro no topo e resgatam parte do vão morto no meio. */
+@media (max-width: 1023px) {
+  .split-title-overlay {
+    top: clamp(5rem, 3.25rem + 9vh, 9.5rem);
+  }
+
+  .split-title-sub {
+    margin-top: var(--space-3);
+  }
+
+  .side__top {
+    top: clamp(4.25rem, 3.5rem + 2.4vh, 5.25rem);
+  }
+
+  .side__pitch {
+    top: 45%;
+    max-width: 32vw;
+  }
+
+  /* max-width era 84% — menor que o próprio piso do clamp (360px) numa
+     coluna de ~384px nesta faixa, então o max-width vencia e a imagem
+     renderizava ~320px em vez dos 360-560px pretendidos. */
+  .side__product-img {
+    width: clamp(360px, 52vw, 560px);
+    max-width: 96%;
+  }
+
+  .split-title-line {
+    font-size: clamp(2.4rem, 1.8rem + 4.4vw, 4.75rem);
+  }
+
+  .brand-mark__name {
+    font-size: clamp(1.1rem, 1rem + 0.8vw, 1.5rem);
+  }
+
+  .site-nav__list {
+    gap: clamp(0.9rem, 0.6rem + 1.4vw, 1.6rem);
+  }
+}
+
+/* Mobile (até 767px): os dois mundos empilham verticalmente. O título
+   segue como assinatura de abertura; cada metade vira sua própria cena,
+   com marca, slogan e CTA centralizados sobre o produto. */
+@media (max-width: 767px) {
+  .site-nav {
+    top: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    max-width: calc(100vw - var(--space-6));
+    /* Fundo translúcido para não vazar sobre conteúdo no scroll */
+    background: rgba(245, 226, 190, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .site-nav__list {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .site-nav__link {
+    font-size: 0.68rem;
+  }
+
+  /* No mobile todos os links ficam em cor escura sobre o fundo creme do nav */
+  .site-nav__list li:nth-child(4) .site-nav__link,
+  .site-nav__list li:nth-child(5) .site-nav__link,
+  .nav-combos-right {
+    color: var(--ink);
+    text-shadow: none;
+  }
+  .site-nav__link {
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .split-hero {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  /* Efeitos de composição split (costura central, fumaça de topo, grão)
+     são pensados para o layout lado-a-lado do desktop. Empilhado no
+     mobile eles sobrepõem o conteúdo das duas cenas de forma incorreta,
+     então saem aqui sem afetar nada além da apresentação mobile. */
+  .split-seam,
+  .hero-smoke,
+  .hero-grain {
+    display: none;
+  }
+
+  .split-title-overlay {
+    position: static;
+    /* Era calc(space-8 + 2rem) = 6rem de topo — causava vão vazio enorme abaixo da nav */
+    padding: calc(var(--space-7) + 2.5rem) var(--space-5) var(--space-4);
+    pointer-events: auto;
+  }
+
+  .split-title-line--mundos,
+  .split-title-sub {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--ink);
+  }
+
+  .split-title-line {
+    font-size: clamp(2.2rem, 1.6rem + 6.4vw, 3.1rem);
+  }
+
+  .split-title-sub {
+    max-width: none;
+    white-space: normal;
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.82rem);
+    letter-spacing: 0.04em;
+  }
+
+  /* A cena inteira vira um fluxo vertical: marca -> slogan -> produto -> CTA.
+     Padding reduzido: o espaço-8 (4rem) causava um vão vazio enorme no topo
+     de cada seção antes do logo aparecer. */
+  .side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: auto;
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    gap: var(--space-3);
+  }
+
+  .side__top,
+  .side__pitch,
+  .side__cta-wrap {
+    position: static;
+    inset: auto;
+    padding-inline: 0;
+  }
+
+  .side__top {
+    order: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .brand-mark--stacked,
+  .side--hamburguinn .brand-mark--stacked {
+    align-items: center;
+  }
+
+  .brand-mark--stacked .brand-mark__text,
+  .side--hamburguinn .brand-mark--stacked .brand-mark__text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .brand-mark__mascot {
+    --mascot-size: 62px;
+  }
+
+  .side__pitch {
+    order: 2;
+    left: auto;
+    right: auto;
+    align-items: center;
+    text-align: center;
+    max-width: none;
+  }
+
+  .side--franguinn .side__pitch,
+  .side--hamburguinn .side__pitch {
+    left: auto;
+    right: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .side__product {
+    order: 3;
+    position: relative;
+    inset: auto;
+    height: auto;
+    width: 100%;
+    align-items: center;
+  }
+
+  .side__product-glow {
+    width: min(80vw, 420px);
+    height: min(80vw, 420px);
+  }
+
+  .side__product-shadow {
+    width: min(50vw, 260px);
+  }
+
+  .side__product-img {
+    width: 88%;
+    max-width: 88%;
+    height: auto;
+  }
+
+  .side--franguinn .side__product-img,
+  .side--franguinn .side__product-shadow {
+    transform: translateX(0);
+  }
+
+  .side--hamburguinn .side__product-img,
+  .side--hamburguinn .side__product-shadow {
+    transform: translateX(0);
+  }
+
+  .side__cta-wrap {
+    order: 4;
+    left: auto;
+    right: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .side--franguinn .side__cta-wrap,
+  .side--hamburguinn .side__cta-wrap {
+    left: auto;
+    right: auto;
+  }
+
+  .cta {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  /* Selo central: reordenado via flex para cair entre os dois blocos
+     empilhados (no encontro dos mundos), reduzido em vez de escondido. */
+  .split-title-overlay {
+    order: 0;
+  }
+
+  .side--franguinn {
+    order: 1;
+  }
+
+  .center-badge {
+    order: 2;
+    position: static;
+    transform: none;
+    margin: calc(var(--space-6) * -1) auto var(--space-2);
+    width: 90px;
+  }
+
+  .side--hamburguinn {
+    order: 3;
+  }
+}
+
+@media (max-width: 400px) {
+  .side__top,
+  .side__pitch,
+  .side__cta-wrap {
+    padding-inline: var(--space-2);
+  }
+
+  .cta {
+    padding: var(--space-4) var(--space-5);
+  }
+}

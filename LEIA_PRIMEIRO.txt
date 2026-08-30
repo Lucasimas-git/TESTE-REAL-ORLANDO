@@ -1,0 +1,14 @@
+COMO INSTALAR ESTE PACOTE
+
+1. Feche o servidor Vite se quiser (não é obrigatório).
+2. Abra a pasta principal do projeto `franguinn-hamburguinn-site`.
+3. Extraia o CONTEÚDO deste ZIP diretamente nessa pasta.
+4. Quando o Windows perguntar para mesclar as pastas `public` e `references`, aceite.
+5. Este pacote NÃO contém `src/`, `index.html` ou código do seu site. Portanto ele não apaga o trabalho atual do Claude.
+6. Depois abra um NOVO chat do Claude no VS Code.
+7. Diga para ele ler primeiro:
+   - `CLAUDE_ASSET_MAP.md`
+   - `references/home-target-master.png`
+8. Use o prompt mestre da reconstrução da Home.
+
+Você não precisa analisar arquivo por arquivo: os nomes `*-hero-product.png`, `*-mascot.png` e `home-target-master.png` são os arquivos prioritários.
