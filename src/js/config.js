@@ -6,7 +6,12 @@ export const ROUTES = {
 };
 
 // Links externos por marca. NENHUM valor real foi confirmado ainda.
-// TODO: substituir por número de WhatsApp real (formato https://wa.me/55DDDNUMERO)
+//
+// >>> PARA LIGAR O WHATSAPP: basta preencher `whatsapp` abaixo com
+//     'https://wa.me/55DDDNUMERO'. Todos os botões [data-wa] das páginas
+//     internas passam a apontar para lá automaticamente (initWhatsappLinks
+//     em navigation.js). Não é preciso editar HTML.
+//
 // TODO: substituir por URL real do cardápio externo (ex: iFood, cardápio digital próprio)
 export const LINKS = {
   franguinn: {

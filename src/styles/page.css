@@ -1,0 +1,1217 @@
+/* ==========================================================================
+   PÁGINAS INTERNAS (/franguinn/ e /hamburguinn/)
+
+   Um único sistema de componentes serve as duas marcas. A diferença entre
+   elas é SÓ paleta: cada página declara `data-brand` no <body> e o bloco
+   de tema abaixo redefine as variáveis locais (--pg-*). Nenhum componente
+   abaixo referencia cor de marca diretamente — sempre via --pg-*.
+
+   Por que não reaproveitar home.css: a Home é uma cena única de split
+   screen com posicionamento absoluto calibrado em vh/vw. As internas são
+   páginas de fluxo normal, com seções empilhadas. Misturar os dois
+   sistemas era o caminho mais curto para os mesmos bugs de sobreposição
+   que a Home já teve.
+   ========================================================================== */
+
+/* ---------- Tema: Franguinn (claro / creme + laranja) ---------- */
+[data-brand='franguinn'] {
+  --pg-bg: linear-gradient(180deg, #FDF4E4 0%, #FBE9CE 42%, #F6D6A6 100%);
+  --pg-surface: #FCF3E3;
+  --pg-surface-2: #F7E6C9;
+  --pg-ink: #2A0F08;
+  --pg-ink-strong: #3B1608;
+  --pg-muted: rgba(42, 15, 8, 0.72);
+  --pg-accent: #E07A0C;
+  --pg-accent-deep: #B85C05;
+  --pg-accent-2: #C0261F;
+  --pg-line: rgba(42, 15, 8, 0.12);
+  --pg-card-shadow: 0 18px 40px -22px rgba(122, 62, 10, 0.45);
+  --pg-nav-bg: rgba(253, 244, 228, 0.82);
+  --pg-chip-bg: rgba(240, 220, 188, 0.75);
+  --pg-chip-ink: rgba(42, 15, 8, 0.78);
+  --pg-media-bg: #1B1512;
+}
+
+/* ---------- Tema: Hamburguinn (escuro / brasa + vinho) ---------- */
+[data-brand='hamburguinn'] {
+  --pg-bg: #0B0405;
+  --pg-surface: #16090A;
+  --pg-surface-2: #1E0C0D;
+  --pg-ink: #F5EAD7;
+  --pg-ink-strong: #FFF6E6;
+  --pg-muted: rgba(245, 234, 215, 0.7);
+  --pg-accent: #E8873A;
+  --pg-accent-deep: #D9741F;
+  --pg-accent-2: #C51F24;
+  --pg-line: rgba(245, 234, 215, 0.14);
+  --pg-card-shadow: 0 22px 50px -26px rgba(0, 0, 0, 0.9);
+  --pg-nav-bg: rgba(11, 4, 5, 0.82);
+  --pg-chip-bg: rgba(245, 234, 215, 0.06);
+  --pg-chip-ink: rgba(245, 234, 215, 0.78);
+  --pg-media-bg: #0A0405;
+}
+
+/* ==========================================================================
+   Casca da página
+   ========================================================================== */
+
+body[data-brand] {
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+}
+
+/* Brasas / névoa de fundo do lado Hamburguinn — a página escura ficava
+   chapada sem isso. Fixo em relação à viewport para não "andar" com o
+   scroll e não criar área rolável extra. */
+[data-brand='hamburguinn'] .page-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 18% 8%, rgba(197, 31, 36, 0.16), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 88% 30%, rgba(140, 22, 26, 0.14), transparent 72%),
+    radial-gradient(ellipse 70% 40% at 50% 105%, rgba(197, 31, 36, 0.1), transparent 70%);
+}
+
+[data-brand='franguinn'] .page-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 40% at 12% 6%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(ellipse 60% 45% at 92% 40%, rgba(230, 150, 40, 0.14), transparent 72%);
+}
+
+.page-main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Container padrão de todas as seções */
+.shell {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 0.5rem + 3.2vw, 3.5rem);
+}
+
+.section {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+}
+
+.section--tight {
+  padding-block: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+}
+
+/* ==========================================================================
+   Navegação das páginas internas
+   ========================================================================== */
+
+.page-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--pg-nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--pg-line);
+}
+
+.page-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  min-height: clamp(64px, 56px + 2vh, 84px);
+  padding-block: var(--space-3);
+}
+
+.page-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.page-nav__brand .brand-mark__mascot {
+  --mascot-size: 44px;
+}
+
+.page-nav__brand .brand-mark__ring {
+  width: 62px;
+  height: 62px;
+  border-color: color-mix(in srgb, var(--pg-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--pg-surface) 45%, transparent);
+}
+
+.page-nav__name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--pg-accent);
+}
+
+[data-brand='franguinn'] .page-nav__name {
+  color: var(--pg-ink-strong);
+}
+
+.page-nav__tagline {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pg-muted);
+}
+
+.page-nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 0.4rem + 2vw, 2.4rem);
+}
+
+.page-nav__link {
+  position: relative;
+  display: inline-block;
+  padding: var(--space-2) 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.76rem, 0.72rem + 0.2vw, 0.9rem);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--pg-ink);
+  opacity: 0.82;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+.page-nav__link:hover,
+.page-nav__link:focus-visible {
+  opacity: 1;
+}
+
+.page-nav__link:focus-visible {
+  outline: none;
+  border-radius: 0;
+}
+
+.page-nav__link.is-active,
+.page-nav__link:focus-visible {
+  opacity: 1;
+}
+
+.page-nav__link.is-active::after,
+.page-nav__link:focus-visible::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--pg-accent);
+}
+
+.page-nav__end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+/* Selo circular "Dois sabores / Uma experiência" — é também o caminho de
+   volta para a Home (o único elemento que aponta para os dois mundos). */
+.world-seal {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--pg-accent) 60%, transparent);
+  color: var(--pg-accent);
+  text-align: center;
+  line-height: 1.15;
+  transition: transform var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.world-seal:hover {
+  transform: scale(1.05);
+  border-color: var(--pg-accent);
+}
+
+.world-seal__text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.world-seal__crown {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   Tipografia de seção
+   ========================================================================== */
+
+.eyebrow {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.72rem, 0.68rem + 0.2vw, 0.85rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--pg-muted);
+}
+
+.eyebrow::after {
+  content: '';
+  height: 2px;
+  width: 44px;
+  border-radius: var(--radius-full);
+  background: var(--pg-accent);
+}
+
+.eyebrow--center {
+  align-items: center;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 4.25rem);
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  color: var(--pg-ink-strong);
+  text-wrap: balance;
+}
+
+.tint-accent {
+  color: var(--pg-accent);
+}
+
+.tint-deep {
+  color: var(--pg-accent-2);
+}
+
+.section-lead {
+  max-width: 56ch;
+  font-family: var(--font-body);
+  font-size: clamp(0.92rem, 0.88rem + 0.25vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--pg-muted);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.section-head--center {
+  align-items: center;
+  text-align: center;
+}
+
+/* Cabeçalho em duas colunas (título à esquerda, texto à direita) — layout
+   do cardápio Hamburguinn na referência. */
+.section-head--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: end;
+  gap: var(--space-5) clamp(2rem, 1rem + 4vw, 5rem);
+}
+
+.section-head--split .eyebrow {
+  grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   Hero das páginas internas
+   ========================================================================== */
+
+.page-hero {
+  position: relative;
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(2rem, 1.2rem + 3vw, 4rem);
+}
+
+.page-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+}
+
+.page-hero__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 1.4rem + 5vw, 5.25rem);
+  line-height: 0.9;
+  color: var(--pg-ink-strong);
+}
+
+.page-hero__title span {
+  display: block;
+}
+
+.page-hero__rule {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block: var(--space-5);
+  color: var(--pg-accent-2);
+}
+
+.page-hero__rule::before,
+.page-hero__rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.5;
+}
+
+.page-hero__rule svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.page-hero__text {
+  margin-top: var(--space-5);
+  max-width: 44ch;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.08rem);
+  line-height: 1.65;
+  color: var(--pg-muted);
+}
+
+.page-hero__text strong {
+  color: var(--pg-accent);
+  font-weight: 700;
+}
+
+.page-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+/* Selos de atributo abaixo dos CTAs (Frango 100% peito, etc.) */
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) clamp(1rem, 0.5rem + 1.6vw, 2rem);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--pg-line);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.7rem, 0.67rem + 0.15vw, 0.8rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pg-muted);
+}
+
+.hero-badge svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: var(--pg-accent);
+}
+
+/* ---------- Vídeo do hero ---------- */
+
+.page-hero__media {
+  position: relative;
+}
+
+.video-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--pg-media-bg);
+  box-shadow: var(--pg-card-shadow);
+  border: 1px solid var(--pg-line);
+  aspect-ratio: 16 / 10;
+}
+
+.video-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Botão de som: o vídeo entra mudo (única forma de autoplay funcionar
+   nos navegadores), então o controle de áudio precisa ser explícito. */
+.video-sound {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(12, 6, 4, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFF3DF;
+  border: 1px solid rgba(255, 243, 223, 0.25);
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+
+.video-sound:hover {
+  background: rgba(12, 6, 4, 0.85);
+}
+
+.video-sound svg {
+  width: 19px;
+  height: 19px;
+}
+
+.video-sound__off {
+  display: none;
+}
+
+.video-sound[aria-pressed='true'] .video-sound__on {
+  display: none;
+}
+
+.video-sound[aria-pressed='true'] .video-sound__off {
+  display: block;
+}
+
+/* Selo flutuante sobre o vídeo (canto superior direito, no Hamburguinn) */
+.page-hero__seal {
+  position: absolute;
+  top: clamp(-0.5rem, -1rem + 1vw, 0.75rem);
+  right: clamp(-0.5rem, -1rem + 1vw, 1rem);
+  z-index: 2;
+  background: var(--pg-surface);
+}
+
+/* ==========================================================================
+   Cards de categoria
+   ========================================================================== */
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
+}
+
+.cat-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: 190px;
+  border-radius: var(--radius-md);
+  background: var(--pg-surface);
+  border: 1px solid var(--pg-line);
+  box-shadow: var(--pg-card-shadow);
+  transition: transform var(--dur-base) var(--ease-standard),
+    border-color var(--dur-base) var(--ease-standard);
+}
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--pg-accent) 50%, transparent);
+}
+
+.cat-card__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: clamp(1.1rem, 0.9rem + 0.7vw, 1.75rem);
+  width: 62%;
+}
+
+.cat-card__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.85rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+}
+
+.cat-card__text {
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--pg-muted);
+}
+
+.cat-card__go {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-top: auto;
+  border-radius: 50%;
+  background: var(--pg-accent);
+  color: #FFF3DF;
+  font-size: 1.05rem;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.cat-card:hover .cat-card__go {
+  transform: translateX(4px);
+}
+
+/* Foto sangrando pela direita, com fade para a superfície do card */
+.cat-card__media {
+  position: absolute;
+  inset: 0 0 0 45%;
+  z-index: 1;
+}
+
+.cat-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cat-card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--pg-surface) 0%, transparent 62%);
+}
+
+/* ==========================================================================
+   Filtros do cardápio
+   ========================================================================== */
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+  border-radius: var(--radius-full);
+  background: var(--pg-chip-bg);
+  border: 1px solid var(--pg-line);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.78rem, 0.75rem + 0.15vw, 0.88rem);
+  color: var(--pg-chip-ink);
+  transition: background var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.chip svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.chip:hover {
+  color: var(--pg-ink);
+  border-color: color-mix(in srgb, var(--pg-accent) 45%, transparent);
+}
+
+.chip[aria-selected='true'] {
+  background: var(--pg-accent);
+  border-color: var(--pg-accent);
+  color: #FFF3DF;
+}
+
+/* ==========================================================================
+   Cards de produto
+   ========================================================================== */
+
+.menu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+}
+
+/* Variante com coluna lateral de diferenciais (cardápio Hamburguinn) */
+.menu-layout--aside {
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.34fr);
+  align-items: start;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--pg-surface);
+  border: 1px solid var(--pg-line);
+  box-shadow: var(--pg-card-shadow);
+  transition: transform var(--dur-base) var(--ease-standard),
+    border-color var(--dur-base) var(--ease-standard);
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--pg-accent) 50%, transparent);
+}
+
+.menu-card[hidden] {
+  display: none;
+}
+
+.menu-card__media {
+  position: relative;
+  /* As fotos reais têm fundos diferentes (bancada clara, chapa, fundo
+     preto). Uma base escura + vinheta uniformiza o conjunto para as três
+     não brigarem entre si dentro da mesma grade. */
+  background: var(--pg-media-bg);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.menu-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-base) var(--ease-standard);
+}
+
+.menu-card:hover .menu-card__media img {
+  transform: scale(1.04);
+}
+
+.menu-card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 70% at 50% 45%, transparent 40%, rgba(8, 3, 2, 0.42) 100%);
+}
+
+.menu-card__badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FFF3DF;
+  background: rgba(20, 8, 6, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.menu-card__badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.menu-card__badge--hot {
+  background: var(--pg-accent-2);
+}
+
+.menu-card__badge--new {
+  background: var(--pg-accent);
+}
+
+.menu-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+  padding: clamp(1rem, 0.85rem + 0.6vw, 1.4rem);
+}
+
+.menu-card__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.2rem, 1.05rem + 0.7vw, 1.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+}
+
+.menu-card__text {
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--pg-muted);
+}
+
+/* Linha de preço: existe no HTML mas fica oculta até os valores reais
+   chegarem. Trocar `hidden` por conteúdo real quando confirmados. */
+.menu-card__price {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.35rem;
+  color: var(--pg-accent);
+}
+
+.menu-card__cta {
+  margin-top: auto;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Botão contornado (secundário) dentro dos cards */
+.cta--outline {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--pg-accent) 55%, transparent);
+  color: var(--pg-ink);
+  box-shadow: none;
+}
+
+.cta--outline:hover {
+  background: color-mix(in srgb, var(--pg-accent) 12%, transparent);
+  border-color: var(--pg-accent);
+}
+
+/* ---------- Coluna lateral de diferenciais ---------- */
+
+.aside-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.aside-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+  padding-block: clamp(1.1rem, 0.9rem + 0.8vw, 1.75rem);
+}
+
+.aside-item + .aside-item {
+  border-top: 1px solid var(--pg-line);
+}
+
+.aside-item__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--pg-accent) 45%, transparent);
+  color: var(--pg-accent);
+}
+
+.aside-item__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.aside-item__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+  margin-bottom: var(--space-2);
+}
+
+.aside-item__text {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--pg-muted);
+}
+
+/* ==========================================================================
+   Faixa de informações (entrega / molhos / qualidade)
+   ========================================================================== */
+
+.info-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+  padding: clamp(1.25rem, 1rem + 1.4vw, 2.25rem);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--pg-surface) 70%, transparent);
+  border: 1px solid var(--pg-line);
+}
+
+.info-item {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.info-item + .info-item {
+  border-left: 1px solid var(--pg-line);
+  padding-left: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+}
+
+.info-item__icon {
+  color: var(--pg-accent);
+}
+
+.info-item__icon svg {
+  width: 44px;
+  height: 44px;
+}
+
+.info-item__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1rem, 0.92rem + 0.4vw, 1.25rem);
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+  margin-bottom: var(--space-2);
+}
+
+.info-item__text {
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--pg-muted);
+}
+
+.info-item__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--pg-muted);
+}
+
+.info-item__meta svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ==========================================================================
+   Faixa final de CTA + rodapé
+   ========================================================================== */
+
+.cta-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(1.25rem, 0.75rem + 2vw, 3rem);
+  padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(ellipse 70% 140% at 12% 50%, rgba(197, 31, 36, 0.28), transparent 70%),
+    linear-gradient(120deg, #2A0709 0%, #460C0E 55%, #1B0405 100%);
+  border: 1px solid rgba(245, 234, 215, 0.14);
+  color: #F5EAD7;
+}
+
+.cta-band__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2.4rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FFF6E6;
+}
+
+.cta-band__text {
+  margin-top: var(--space-3);
+  max-width: 48ch;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(245, 234, 215, 0.75);
+}
+
+.cta-band__hours {
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(245, 234, 215, 0.2);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: rgba(245, 234, 215, 0.7);
+}
+
+.cta-band__hours strong {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: #FFF6E6;
+}
+
+.page-footer {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, #2A0709 0%, #1A0506 60%, #120405 100%);
+  color: #F5EAD7;
+  border-top: 1px solid rgba(245, 234, 215, 0.12);
+}
+
+.page-footer__inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1.25rem, 0.75rem + 2vw, 3rem);
+  padding-block: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+}
+
+.page-footer .brand-mark__mascot {
+  --mascot-size: 46px;
+}
+
+/* O rodapé é escuro nas duas marcas, então o anel do mascote não pode
+   herdar o tom claro do tema Franguinn. */
+.page-footer .brand-mark__ring {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(245, 234, 215, 0.28);
+  background: rgba(245, 234, 215, 0.06);
+}
+
+.page-footer__name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FFF6E6;
+}
+
+.page-footer__tagline {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 234, 215, 0.6);
+}
+
+.page-footer__center {
+  text-align: center;
+}
+
+.page-footer__claim {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.6rem);
+  text-transform: uppercase;
+  color: #FFF6E6;
+}
+
+.page-footer__claim .tint-accent {
+  color: var(--orange-gold);
+}
+
+.page-footer__sub {
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: rgba(245, 234, 215, 0.72);
+}
+
+.page-footer__legal {
+  padding-block: var(--space-4);
+  border-top: 1px solid rgba(245, 234, 215, 0.1);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  color: rgba(245, 234, 215, 0.45);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.page-footer__legal a {
+  border-bottom: 1px solid rgba(245, 234, 215, 0.3);
+}
+
+/* ==========================================================================
+   Responsivo
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .page-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* O vídeo vem primeiro no HTML seria melhor para SEO do texto, mas
+     visualmente o título precisa abrir a página — daí a reordenação. */
+  .page-hero__media {
+    order: 2;
+  }
+
+  .cat-grid,
+  .menu-grid,
+  .info-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .menu-layout--aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .aside-item + .aside-item {
+    border-top: 0;
+  }
+
+  .info-item + .info-item {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .section-head--split {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  /* Abaixo de 1024px os links não cabem na mesma linha da marca. Em vez de
+     escondê-los (o que deixaria Cardápio/Combos/Sobre/Contato inacessíveis,
+     já que não existe menu hambúrguer), eles descem para uma segunda linha
+     com rolagem horizontal. Nada some, nada precisa de JS. */
+  .page-nav__inner {
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+    /* A segunda linha de links já dá altura suficiente; sem zerar o
+       min-height o header sticky passava de 160px e comia 1/6 da tela. */
+    min-height: 0;
+  }
+
+  .page-nav__brand .brand-mark__mascot {
+    --mascot-size: 34px;
+  }
+
+  .page-nav__brand .brand-mark__ring {
+    width: 48px;
+    height: 48px;
+  }
+
+  .page-nav__links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: var(--space-1);
+    border-top: 1px solid var(--pg-line);
+    padding-top: var(--space-3);
+  }
+
+  .page-nav__links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page-nav__link {
+    flex-shrink: 0;
+  }
+
+  .cta-band {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .cat-grid,
+  .menu-grid,
+  .info-strip,
+  .aside-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cat-card__body {
+    width: 68%;
+  }
+
+  .page-hero__actions .cta {
+    flex: 1 1 220px;
+    justify-content: center;
+  }
+
+  /* O selo do nav é decorativo e duplica o destino do logo (Home). Num
+     header sticky de celular ele custava ~25px de altura útil em toda a
+     rolagem, então sai — mas continua no hero do Hamburguinn. */
+  .page-nav__end .world-seal {
+    display: none;
+  }
+
+  .page-nav__inner {
+    padding-block: var(--space-2);
+  }
+
+  .page-nav__end .cta {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.7rem;
+  }
+
+  .world-seal {
+    width: 66px;
+    height: 66px;
+  }
+
+  .page-footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  /* Faixa de filtros vira scroll horizontal em vez de quebrar em 3 linhas */
+  .chip-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: var(--space-2);
+    margin-inline: calc(clamp(1.25rem, 0.5rem + 3.2vw, 3.5rem) * -1);
+    padding-inline: clamp(1.25rem, 0.5rem + 3.2vw, 3.5rem);
+  }
+
+  .chip-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex-shrink: 0;
+  }
+}
