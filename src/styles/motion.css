@@ -1,0 +1,423 @@
+/* ==========================================================================
+   MOVIMENTO
+
+   Regra que governa este arquivo: só `transform` e `opacity` são animados.
+   São as duas únicas propriedades que o navegador consegue resolver na GPU
+   sem recalcular layout — o que no celular é a diferença entre 60fps e uma
+   rolagem picotada.
+
+   O estado inicial (elemento invisível, esperando entrar) é aplicado APENAS
+   sob `.motion` no <html>, classe que motion.js adiciona como sua primeira
+   linha. Se o JS falhar, não carregar ou o navegador não tiver
+   IntersectionObserver, a classe nunca entra e a página aparece inteira,
+   estática. Nenhum conteúdo depende de animação para ser visto.
+   ========================================================================== */
+
+:root {
+  /* Saída suave (desacelera longo no fim) — sensação de peso, combina com
+     comida. A `back` tem overshoot leve, só para toques de UI. */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --dur-slow: 620ms;
+  --dur-med: 420ms;
+}
+
+/* ==========================================================================
+   1. Entrada por rolagem (IntersectionObserver)
+   ========================================================================== */
+
+.motion .reveal {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 26px), 0)
+    scale(var(--reveal-s, 1));
+  transition:
+    opacity var(--dur-slow) var(--ease-out-soft),
+    transform var(--dur-slow) var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal--left  { --reveal-x: -30px; --reveal-y: 0; }
+.reveal--right { --reveal-x: 30px;  --reveal-y: 0; }
+.reveal--zoom  { --reveal-y: 12px;  --reveal-s: 0.94; }
+
+/* ==========================================================================
+   2. Cards do cardápio
+
+   Não usam `.reveal`: um card escondido pelo filtro está em `display:none`,
+   e o IntersectionObserver não observa o que não é renderizado. Em vez
+   disso a grade inteira é o alvo do observer e os cards animam por
+   `animation`. Isso resolve os dois momentos de uma vez: quando a grade
+   entra na tela E quando o filtro revela um card novo — trocar
+   `display:none` por visível reinicia a animação do elemento
+   automaticamente, sem JS nenhum.
+   ========================================================================== */
+
+.motion .menu-grid .menu-card {
+  opacity: 0;
+}
+
+.motion .menu-grid.is-in .menu-card {
+  animation: card-in var(--dur-slow) var(--ease-out-soft) both;
+  /* --i é o índice ENTRE OS VISÍVEIS, recalculado a cada filtro; sem isso
+     um filtro que mostra os cards 4 e 6 começaria com 240ms de atraso. */
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   3. Cabeçalho que se recolhe ao rolar
+   ========================================================================== */
+
+.page-nav {
+  transition:
+    transform var(--dur-med) var(--ease-out-soft),
+    box-shadow var(--dur-med) var(--ease-out-soft),
+    background-color var(--dur-med) var(--ease-out-soft);
+}
+
+.page-nav.is-stuck {
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.55);
+}
+
+/* Cabeçalho recolhido ao descer (ver initScrollHeader). translate e não
+   `display:none` para que ele deslize de volta, e para que o foco do
+   teclado continue podendo alcançá-lo — um elemento removido do fluxo
+   sumiria também da ordem de tabulação. */
+.page-nav.is-hidden {
+  transform: translate3d(0, -100%, 0);
+}
+
+/* Quem chega pelo teclado precisa ver onde está: qualquer foco dentro do
+   cabeçalho o traz de volta, mesmo escondido. */
+.page-nav:focus-within {
+  transform: none;
+}
+
+.page-nav__inner {
+  /* `padding` e não `padding-block`: a shorthand lógica não é reconhecida
+     como propriedade transicionável em parte dos motores, e a transição
+     simplesmente não acontece. */
+  transition: min-height var(--dur-med) var(--ease-out-soft),
+    padding var(--dur-med) var(--ease-out-soft);
+}
+
+.page-nav.is-stuck .page-nav__inner {
+  min-height: 0;
+  padding-block: var(--space-2);
+}
+
+.page-nav .brand-mark__ring,
+.page-nav .brand-mark__mascot {
+  transition: width var(--dur-med) var(--ease-out-soft),
+    height var(--dur-med) var(--ease-out-soft);
+}
+
+/* width/height diretos, e não via --mascot-size: mudar uma custom property
+   não dispara transição da longhand que a consome de forma confiável entre
+   navegadores — o mascote saltaria de tamanho em vez de encolher. */
+.page-nav.is-stuck .brand-mark__mascot { width: 32px; height: 32px; }
+.page-nav.is-stuck .brand-mark__ring { width: 46px; height: 46px; }
+
+/* A tagline sai no estado recolhido: é a informação mais dispensável da
+   barra e devolve ~14px de altura em toda a rolagem. */
+.page-nav__tagline {
+  overflow: hidden;
+  transition: opacity var(--dur-med) var(--ease-out-soft),
+    max-height var(--dur-med) var(--ease-out-soft);
+  max-height: 1.5em;
+}
+
+.page-nav.is-stuck .page-nav__tagline {
+  opacity: 0;
+  max-height: 0;
+}
+
+/* ---------- Barra de progresso de leitura ---------- */
+
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--pg-accent), var(--pg-accent-2));
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   4. Rotação ligada à rolagem
+
+   É o efeito que o cliente descreveu ("vai rodando conforme rola"). Feito
+   com scroll-driven animation nativa: o navegador liga o progresso da
+   animação ao progresso da barra de rolagem, sem um único listener em JS —
+   custo zero na thread principal, que é o que importa no celular.
+
+   Fica dentro de @supports porque Firefox ainda não implementa. Sem
+   suporte, o mascote simplesmente não gira; nada mais muda.
+   ========================================================================== */
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .page-nav__brand .brand-mark__mascot {
+      animation: spin-on-scroll linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    /* O selo entra girando e sobe levemente enquanto atravessa a tela. */
+    .page-hero__seal {
+      animation: seal-drift linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% cover 60%;
+    }
+  }
+}
+
+@keyframes spin-on-scroll {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes seal-drift {
+  from { transform: rotate(-14deg) scale(0.9); }
+  to { transform: rotate(6deg) scale(1); }
+}
+
+/* ==========================================================================
+   5. Faixa corrida (marquee)
+
+   Duplicada no HTML: a animação desloca a trilha em exatamente -50%, então
+   a segunda cópia ocupa o lugar da primeira no instante do loop e a emenda
+   fica invisível. `aria-hidden` porque é repetição decorativa.
+   ========================================================================== */
+
+.marquee {
+  overflow: hidden;
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--pg-line);
+  background: color-mix(in srgb, var(--pg-surface) 55%, transparent);
+  user-select: none;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__group {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  padding-right: clamp(1.5rem, 1rem + 2vw, 3rem);
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1rem, 0.85rem + 0.8vw, 1.5rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--pg-ink-strong);
+}
+
+.marquee__item:nth-child(even) {
+  color: var(--pg-accent);
+}
+
+.marquee__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pg-accent-2);
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ==========================================================================
+   6. Barra fixa de pedido (só no celular)
+
+   Num cardápio de delivery o botão de pedir não pode depender de o usuário
+   rolar de volta até achar um. A barra aparece depois do herói e some
+   quando o rodapé chega — assim nunca cobre os links finais.
+   ========================================================================== */
+
+.order-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  /* Respeita a barra de gestos do iPhone; sem isso o botão fica embaixo dela. */
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--pg-nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--pg-line);
+  transform: translate3d(0, 110%, 0);
+  transition: transform var(--dur-med) var(--ease-out-soft);
+}
+
+.order-bar.is-visible {
+  transform: none;
+}
+
+.order-bar__label {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+}
+
+.order-bar__meta {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--pg-muted);
+}
+
+@media (max-width: 767px) {
+  .order-bar {
+    display: flex;
+  }
+}
+
+/* ==========================================================================
+   7. Micro-interações
+   ========================================================================== */
+
+/* No toque não existe :hover — sem um estado de :active explícito o botão
+   parece não responder ao dedo. */
+.cta:active,
+.chip:active,
+.cat-card:active,
+.menu-card:active {
+  transform: scale(0.975);
+}
+
+.cta,
+.chip,
+.cat-card,
+.menu-card,
+.page-nav__link,
+.world-seal {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip {
+  transition: background var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-out-back);
+}
+
+.chip[aria-pressed='true'] {
+  transform: translateY(-2px);
+}
+
+/* Sublinhado que cresce do centro no link do menu */
+.page-nav__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--pg-accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast) var(--ease-out-soft);
+}
+
+.page-nav__link:hover::before {
+  transform: scaleX(1);
+}
+
+/* A seção em que o leitor está fica marcada no menu enquanto ele rola. */
+.page-nav__link.is-current::before {
+  transform: scaleX(1);
+}
+
+.page-nav__link.is-current {
+  opacity: 1;
+}
+
+.menu-card__media img {
+  transition: transform var(--dur-slow) var(--ease-out-soft);
+}
+
+.cat-card__media img {
+  transition: transform var(--dur-slow) var(--ease-out-soft);
+}
+
+.cat-card:hover .cat-card__media img {
+  transform: scale(1.05);
+}
+
+.info-item__icon,
+.aside-item__icon {
+  transition: transform var(--dur-med) var(--ease-out-back);
+}
+
+.info-item:hover .info-item__icon,
+.aside-item:hover .aside-item__icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* ==========================================================================
+   8. Preferência de menos movimento
+
+   base.css já zera durations globalmente. O que falta aqui é garantir que
+   os elementos que COMEÇAM invisíveis apareçam mesmo assim — com a
+   transição zerada, um `.reveal` que nunca recebesse `.is-in` ficaria
+   invisível para sempre.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .motion .reveal,
+  .motion .menu-grid .menu-card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .marquee__track {
+    animation: none;
+  }
+
+  .order-bar {
+    transition: none;
+  }
+}

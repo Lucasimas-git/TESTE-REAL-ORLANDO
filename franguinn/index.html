@@ -20,7 +20,11 @@
     property="og:description"
     content="Frango 100% peito, empanado na hora e frito até ficar perfeitamente crocante."
   />
-  <meta property="og:image" content="/assets/products/franguinn/franguinn-01.webp" />
+  <!-- %BASE_URL% e não "/": o Vite reescreve src/href de img, video e link
+       para incluir o subdiretório do GitHub Pages, mas NÃO mexe em
+       meta[content]. Sem o placeholder, a prévia do link no WhatsApp
+       apontaria para /assets/... na raiz do domínio e viria sem imagem. -->
+  <meta property="og:image" content="%BASE_URL%assets/products/franguinn/franguinn-01.webp" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,6 +38,7 @@
   <link rel="stylesheet" href="/src/styles/base.css" />
   <link rel="stylesheet" href="/src/styles/components.css" />
   <link rel="stylesheet" href="/src/styles/page.css" />
+  <link rel="stylesheet" href="/src/styles/motion.css" />
 </head>
 <body data-brand="franguinn">
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
@@ -62,8 +67,11 @@
         </span>
       </a>
 
+      <!-- "Início" e não "Home": o logo ao lado e o rodapé já usam "Home"
+           para a página de escolha das duas marcas. Dois destinos
+           diferentes com o mesmo nome, lado a lado, confundem. -->
       <nav class="page-nav__links" aria-label="Navegação da Franguinn">
-        <a class="page-nav__link is-active" href="#main">Home</a>
+        <a class="page-nav__link is-active" href="#main">Início</a>
         <a class="page-nav__link" href="#cardapio">Cardápio</a>
         <a class="page-nav__link" href="#cardapio" data-filter-link="combos">Combos</a>
         <a class="page-nav__link" href="#sobre">Sobre</a>
@@ -87,21 +95,21 @@
          HERO
          ====================================================================== -->
     <section class="page-hero">
-      <div class="shell page-hero__grid">
+      <div class="shell page-hero__grid" data-stagger="70">
         <div class="page-hero__copy">
-          <h1 class="page-hero__title">
+          <h1 class="page-hero__title reveal">
             <span>Crocante</span>
             <span class="tint-accent">por fora.</span>
             <span>Suculento</span>
             <span class="tint-accent">por dentro.</span>
           </h1>
 
-          <p class="page-hero__text">
+          <p class="page-hero__text reveal">
             Frango 100% peito, empanado na hora e preparado com ingredientes
             selecionados para entregar o <strong>máximo de sabor</strong> em cada mordida.
           </p>
 
-          <div class="page-hero__actions">
+          <div class="page-hero__actions reveal">
             <!-- TODO: trocar href por https://wa.me/55DDDNUMERO quando o número real for confirmado -->
             <a class="cta cta--franguinn" href="#" data-wa="franguinn">
               <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
@@ -116,7 +124,7 @@
             </a>
           </div>
 
-          <ul class="hero-badges">
+          <ul class="hero-badges reveal">
             <li class="hero-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path d="M4 20c0-8 6-14 16-14 0 10-6 14-16 14z" stroke-linejoin="round" />
@@ -140,7 +148,7 @@
           </ul>
         </div>
 
-        <div class="page-hero__media">
+        <div class="page-hero__media reveal reveal--zoom">
           <div class="video-frame">
             <video
               id="franguinn-hero-video"
@@ -176,11 +184,47 @@
     </section>
 
     <!-- ======================================================================
+         FAIXA CORRIDA
+         O grupo é duplicado de propósito: a animação desloca a trilha em
+         -50%, então no instante do loop a segunda cópia está exatamente
+         onde a primeira começou e a emenda não aparece. aria-hidden porque
+         para quem ouve a página isso seria a mesma lista lida duas vezes.
+         ====================================================================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Crocante por fora</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Suculento por dentro</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Empanado na hora</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Frango 100% peito</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Molhos da casa</span>
+          <span class="marquee__dot"></span>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">Crocante por fora</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Suculento por dentro</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Empanado na hora</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Frango 100% peito</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Molhos da casa</span>
+          <span class="marquee__dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
          CATEGORIAS
          ====================================================================== -->
     <section class="section section--tight" aria-label="Categorias">
-      <div class="shell cat-grid">
-        <a class="cat-card" href="#cardapio">
+      <div class="shell cat-grid" data-stagger="110">
+        <a class="cat-card reveal" href="#cardapio">
           <div class="cat-card__body">
             <h2 class="cat-card__title">Frango<br />crocante</h2>
             <p class="cat-card__text">
@@ -193,7 +237,7 @@
           </div>
         </a>
 
-        <a class="cat-card" href="#cardapio" data-filter-link="combos">
+        <a class="cat-card reveal" href="#cardapio" data-filter-link="combos">
           <div class="cat-card__body">
             <h2 class="cat-card__title">Combos</h2>
             <p class="cat-card__text">
@@ -206,7 +250,7 @@
           </div>
         </a>
 
-        <a class="cat-card" href="#cardapio">
+        <a class="cat-card reveal" href="#cardapio">
           <div class="cat-card__body">
             <h2 class="cat-card__title">Molhos<br />exclusivos</h2>
             <p class="cat-card__text">
@@ -228,31 +272,34 @@
          ====================================================================== -->
     <section class="section" id="cardapio" data-menu>
       <div class="shell">
-        <div class="section-head section-head--center">
-          <span class="eyebrow eyebrow--center">Cardápio</span>
-          <h2 class="section-title">
+        <div class="section-head section-head--center" data-stagger="90">
+          <span class="eyebrow eyebrow--center reveal">Cardápio</span>
+          <h2 class="section-title reveal">
             Sabores únicos. <span class="tint-accent">Feitos</span> <span class="tint-deep">para você.</span>
           </h2>
-          <p class="section-lead">
+          <p class="section-lead reveal">
             Nosso cardápio foi criado para quem valoriza ingredientes selecionados,
             preparo artesanal e muito sabor em cada mordida.
           </p>
         </div>
 
-        <div class="chip-row" role="tablist" aria-label="Filtrar cardápio">
-          <button class="chip" type="button" role="tab" data-filter="destaque" aria-selected="true">
+        <!-- role="group" + aria-pressed, e não tablist/tab: role="tab" exige
+             um tabpanel associado e navegação por setas do teclado, nada
+             disso existe aqui. São botões de alternância independentes. -->
+        <div class="chip-row" role="group" aria-label="Filtrar cardápio">
+          <button class="chip" type="button" data-filter="destaque" aria-pressed="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.4l6-.8L12 3z" stroke-linejoin="round" />
             </svg>
             Destaques
           </button>
-          <button class="chip" type="button" role="tab" data-filter="frango" aria-selected="false">
+          <button class="chip" type="button" data-filter="frango" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M15.5 3.5a4.5 4.5 0 0 1 1.6 7.3c-1 1-2.3 1.3-3.5 1.1-.9-.2-1.6.1-2.2.7l-5 5a2.1 2.1 0 0 1-3-3l5-5c.6-.6.9-1.3.7-2.2-.2-1.2.1-2.5 1.1-3.5a4.5 4.5 0 0 1 5.3-.4z" stroke-linejoin="round" />
             </svg>
             Frango crocante
           </button>
-          <button class="chip" type="button" role="tab" data-filter="combos" aria-selected="false">
+          <button class="chip" type="button" data-filter="combos" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M3 10c0-3.3 4-6 9-6s9 2.7 9 6" stroke-linecap="round" />
               <path d="M3 13.5h18" stroke-linecap="round" />
@@ -404,6 +451,11 @@
           <p class="section-lead" data-menu-empty hidden>
             Nenhum item nesta categoria por enquanto.
           </p>
+
+          <!-- Trocar de filtro muda a tela sem mexer no foco: quem usa
+               leitor de tela não receberia aviso nenhum. Esta região
+               anuncia o resultado da troca. -->
+          <p class="visually-hidden" role="status" aria-live="polite" data-menu-status></p>
         </div>
       </div>
     </section>
@@ -413,8 +465,8 @@
          ====================================================================== -->
     <section class="section section--tight" id="sobre">
       <div class="shell">
-        <div class="info-strip">
-          <div class="info-item">
+        <div class="info-strip" data-stagger="110">
+          <div class="info-item reveal">
             <span class="info-item__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                 <path d="M5 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
@@ -434,7 +486,7 @@
             </div>
           </div>
 
-          <div class="info-item">
+          <div class="info-item reveal">
             <span class="info-item__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                 <path d="M10 3h4v2.6l1.8 2.7a3 3 0 0 1 .5 1.7V19a2 2 0 0 1-2 2h-4.6a2 2 0 0 1-2-2V10a3 3 0 0 1 .5-1.7L10 5.6V3z" stroke-linejoin="round" />
@@ -447,7 +499,7 @@
             </div>
           </div>
 
-          <div class="info-item">
+          <div class="info-item reveal">
             <span class="info-item__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                 <circle cx="12" cy="12" r="9" />
@@ -469,7 +521,7 @@
          ====================================================================== -->
     <section class="section section--tight" id="contato">
       <div class="shell">
-        <div class="cta-band">
+        <div class="cta-band reveal reveal--zoom">
           <div>
             <h2 class="cta-band__title">Bateu a fome? <span class="tint-accent">A gente entrega.</span></h2>
             <p class="cta-band__text">
@@ -492,6 +544,28 @@
       </div>
     </section>
   </main>
+
+  <!-- ========================================================================
+       BARRA FIXA DE PEDIDO (só aparece no celular, via CSS)
+
+       Fica no HTML e não é criada em JS porque initWhatsappLinks precisa
+       encontrá-la para injetar o link — um botão criado depois ficaria sem
+       href. Ela entra depois do herói e sai quando o rodapé chega, para
+       nunca cobrir os links finais.
+       ======================================================================== -->
+  <div class="order-bar" data-order-bar>
+    <div>
+      <p class="order-bar__label">Bateu a fome?</p>
+      <p class="order-bar__meta">Entrega em 30–45 min</p>
+    </div>
+    <a class="cta cta--franguinn" href="#" data-wa="franguinn">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+        <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
+        <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.05-1.32A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z" />
+      </svg>
+      Pedir agora
+    </a>
+  </div>
 
   <footer class="page-footer">
     <div class="shell page-footer__inner">
