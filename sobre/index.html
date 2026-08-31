@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre — Franguinn & Hamburguinn</title>
+  <meta name="description" content="Uma casa, duas cozinhas: a história do Franguinn (frango frito) e do Hamburguinn (smashburger), e o que os dois têm em comum." />
+  <meta name="theme-color" content="#FDF4E4" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Sobre — Franguinn & Hamburguinn" />
+  <meta property="og:description" content="Uma casa, duas cozinhas: a história do Franguinn (frango frito) e do Hamburguinn (smashburger), e o que os dois têm em comum." />
+  <!-- %BASE_URL% e não "/": o Vite reescreve src/href de img e link para
+       incluir o subdiretório do GitHub Pages, mas NÃO mexe em meta[content]. -->
+  <meta property="og:image" content="%BASE_URL%assets/products/hero/hamburguinn-hero-product.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/base.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+  <link rel="stylesheet" href="/src/styles/page.css" />
+  <link rel="stylesheet" href="/src/styles/hub.css" />
+  <link rel="stylesheet" href="/src/styles/motion.css" />
+</head>
+<body data-brand="franguinn" class="is-hub">
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="page-ambient" aria-hidden="true"></div>
+
+  <header class="page-nav">
+    <div class="shell page-nav__inner">
+      <a class="page-nav__brand" href="../" aria-label="Franguinn &amp; Hamburguinn — voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="44" height="44" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="44" height="44" />
+        </span>
+        <span>
+          <span class="page-nav__name">Franguinn <span class="duo-mark__amp">&amp;</span> Hamburguinn</span>
+          <span class="page-nav__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <nav class="page-nav__links" aria-label="Navegação principal">
+        <a class="page-nav__link" href="../">Home</a>
+        <a class="page-nav__link" href="../cardapio/">Cardápio</a>
+        <a class="page-nav__link" href="../cardapio/#combos">Combos</a>
+        <a class="page-nav__link is-active" href="../sobre/">Sobre</a>
+        <a class="page-nav__link" href="../contato/">Contato</a>
+      </nav>
+
+      <div class="page-nav__end">
+        <a class="world-seal" href="../" aria-label="Dois sabores, uma experiência — ir para a Home">
+          <svg class="world-seal__crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="world-seal__text">Dois sabores</span>
+          <span class="world-seal__text">Uma experiência</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page-main">
+
+    <section class="hub-hero">
+      <div class="shell hub-hero__inner" data-stagger="90">
+        <span class="eyebrow eyebrow--center reveal">Sobre</span>
+        <h1 class="hub-hero__title reveal">Uma casa. <span class="tint-accent">Dois mundos.</span></h1>
+        <p class="hub-hero__lead reveal">Franguinn e Hamburguinn dividem a mesma cozinha, a mesma equipe e a mesma teimosia com ingrediente bom. O que muda é o caminho: um vai pela fritadeira, o outro pela chapa.</p>
+      </div>
+    </section>
+
+    <section class="hub-brand" data-brand="franguinn" aria-labelledby="sobre-franguinn">
+      <div class="shell hub-story" data-stagger="90">
+        <div class="hub-story__art reveal reveal--left">
+          <span class="world-switch__glow" aria-hidden="true"></span>
+          <span class="world-switch__frame">
+            <img class="world-switch__product" src="/assets/products/hero/franguinn-hero-product.webp" alt="Sanduíche de frango crocante Franguinn" loading="lazy" width="1300" height="867" />
+            <span class="world-switch__seal" aria-hidden="true">
+              <img src="/assets/brand/franguinn-mascot.webp" alt="" width="88" height="88" loading="lazy" />
+            </span>
+          </span>
+        </div>
+        <div>
+          <span class="eyebrow reveal">O lado crocante</span>
+          <h2 class="section-title reveal" id="sobre-franguinn">Franguinn</h2>
+          <p class="section-lead reveal">
+            Peito inteiro, temperado na véspera e empanado só na hora do pedido. A crosta
+            não vem pronta de lugar nenhum: ela se forma na fritadeira enquanto você espera,
+            e é por isso que ela ainda estala quando chega.
+          </p>
+          <p class="section-lead reveal">
+            Os molhos são da casa, feitos em lote pequeno. Nenhum deles existe para
+            disfarçar o frango — existem para acompanhar.
+          </p>
+          <a class="cta cta--franguinn reveal" href="../franguinn/">
+            Conhecer o Franguinn
+            <span class="cta__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="hub-brand" data-brand="hamburguinn" aria-labelledby="sobre-hamburguinn">
+      <div class="shell hub-story hub-story--invertido" data-stagger="90">
+        <div class="hub-story__art reveal reveal--right">
+          <span class="world-switch__glow" aria-hidden="true"></span>
+          <span class="world-switch__frame">
+            <img class="world-switch__product" src="/assets/products/hero/hamburguinn-hero-product.webp" alt="Hambúrguer Hamburguinn com costela desfiada e cheddar" loading="lazy" width="1300" height="867" />
+            <span class="world-switch__seal" aria-hidden="true">
+              <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="88" height="88" loading="lazy" />
+            </span>
+          </span>
+        </div>
+        <div>
+          <span class="eyebrow reveal">O lado da brasa</span>
+          <h2 class="section-title reveal" id="sobre-hamburguinn">Hamburguinn</h2>
+          <p class="section-lead reveal">
+            Blend fechado com a gente, prensado na chapa quente até formar a crosta escura
+            que dá o gosto. Smash de verdade é questão de segundos e de temperatura — não
+            de tamanho.
+          </p>
+          <p class="section-lead reveal">
+            A costela vai à brasa antes, devagar, e desfia sozinha. É o ingrediente que
+            demora mais e o que menos aparece na foto.
+          </p>
+          <a class="cta cta--hamburguinn reveal" href="../hamburguinn/">
+            Conhecer o Hamburguinn
+            <span class="cta__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-label="O que as duas marcas têm em comum">
+      <div class="shell">
+        <div class="section-head section-head--center" data-stagger="90">
+          <span class="eyebrow eyebrow--center reveal">O que não muda</span>
+          <h2 class="section-title reveal">Duas cozinhas. <span class="tint-accent">Um padrão só.</span></h2>
+        </div>
+
+        <div class="info-strip" data-stagger="110">
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M8 12.3l2.6 2.6L16 9.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Feito na hora</h3>
+              <p class="info-item__text">Nada fica pronto esperando pedido. O que sai da cozinha começou depois que você pediu.</p>
+            </div>
+          </div>
+
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M10 3h4v2.6l1.8 2.7a3 3 0 0 1 .5 1.7V19a2 2 0 0 1-2 2h-4.6a2 2 0 0 1-2-2V10a3 3 0 0 1 .5-1.7L10 5.6V3z" stroke-linejoin="round" />
+                <path d="M8.2 12.5h7.6" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Molhos da casa</h3>
+              <p class="info-item__text">Receitas próprias, em lote pequeno. Os dois lados dividem a mesma bancada de molhos.</p>
+            </div>
+          </div>
+
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M5 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                <path d="M7 16.5h9M16 16.5V7h-3.5M16 10h2.2l2.3 4.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Uma entrega só</h3>
+              <p class="info-item__text">Pediu dos dois? Sai junto, na mesma corrida, quentinho dos dois jeitos.</p>
+              <p class="info-item__meta">Média de 30 a 45 min</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="shell page-footer__inner">
+      <a class="page-nav__brand" href="../" aria-label="Voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="46" height="46" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="46" height="46" />
+        </span>
+        <span>
+          <span class="page-footer__name">Franguinn &amp; Hamburguinn</span>
+          <span class="page-footer__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <div class="page-footer__center">
+        <p class="page-footer__claim">Dois mundos. <span class="tint-accent">Um só lugar.</span></p>
+        <p class="page-footer__sub">Escolha seu lado — ou peça os dois.</p>
+      </div>
+
+      <a class="cta cta--franguinn" href="../cardapio/">Ver o cardápio</a>
+    </div>
+
+    <div class="shell page-footer__legal">
+      <span>© 2026 Franguinn &amp; Hamburguinn. Todos os direitos reservados.</span>
+      <span>
+        <a href="../franguinn/">Franguinn</a> ·
+        <a href="../hamburguinn/">Hamburguinn</a> ·
+        <a href="../contato/">Contato</a>
+      </span>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

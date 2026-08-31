@@ -44,26 +44,24 @@
 <body>
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
 
-  <!-- Os quatro itens depois de "Home" apontavam para "#" (nada). Agora cada
-       um leva para a seção real, ROTEADA PELO LADO EM QUE POUSA: a Home é
-       uma tela dividida, os itens 2 e 3 caem sobre o creme (Franguinn) e os
-       4 e 5 sobre o vinho (Hamburguinn) — a mesma lógica de cor que o CSS
-       já aplica em site-nav__list li:nth-child(4) e (5).
+  <!-- Cada item leva para a página que apresenta AS DUAS marcas, não para
+       dentro de uma delas. Da tela de escolha, um menu que já escolhesse
+       por quem clica anularia a própria escolha que a página propõe.
 
-       O rótulo visível não pode dizer a marca sem quebrar a composição da
-       referência, então quem usa leitor de tela recebe o destino completo
-       pelo aria-label. -->
+       A cor de cada item continua seguindo o lado em que ele pousa sobre o
+       herói dividido (ver site-nav__list li:nth-child(4) e (5) no CSS) —
+       isso é composição, não destino. -->
   <header class="site-nav">
     <nav aria-label="Navegação principal">
       <ul class="site-nav__list">
         <li><a href="./" class="site-nav__link is-active">Home</a></li>
-        <li><a href="franguinn/#cardapio" class="site-nav__link" aria-label="Cardápio do Franguinn">Cardápio</a></li>
+        <li><a href="cardapio/" class="site-nav__link">Cardápio</a></li>
         <!-- ?cat=combos abre o cardápio já filtrado. Um "#combo-x" não
              serviria: sob outro filtro o card está hidden, e o navegador
              não rola até elemento oculto. Ver initialFilter em menu.js. -->
-        <li><a href="franguinn/?cat=combos#cardapio" class="site-nav__link" aria-label="Combos do Franguinn"><span class="nav-combos-left">Com</span><span class="nav-combos-right">bos</span></a></li>
-        <li><a href="hamburguinn/#sobre" class="site-nav__link" aria-label="Sobre o Hamburguinn">Sobre</a></li>
-        <li><a href="hamburguinn/#contato" class="site-nav__link" aria-label="Contato do Hamburguinn">Contato</a></li>
+        <li><a href="cardapio/#combos" class="site-nav__link"><span class="nav-combos-left">Com</span><span class="nav-combos-right">bos</span></a></li>
+        <li><a href="sobre/" class="site-nav__link">Sobre</a></li>
+        <li><a href="contato/" class="site-nav__link">Contato</a></li>
       </ul>
     </nav>
   </header>
@@ -102,7 +100,7 @@
         </div>
       </div>
 
-      <div class="side__product">
+      <div class="side__product" data-burger-stack="franguinn">
         <div class="side__product-shadow" aria-hidden="true"></div>
         <div class="side__product-glow" aria-hidden="true"></div>
         <img
@@ -150,7 +148,7 @@
         </div>
       </div>
 
-      <div class="side__product">
+      <div class="side__product" data-burger-stack="hamburguinn">
         <div class="side__product-shadow" aria-hidden="true"></div>
         <div class="side__product-glow" aria-hidden="true"></div>
         <img

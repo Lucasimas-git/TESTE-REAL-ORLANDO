@@ -1,6 +1,7 @@
 import { initNavigation, initWhatsappLinks } from './navigation.js';
 import { initMenuFilter, initHeroVideo } from './menu.js';
 import { initMotion } from './motion.js';
+import { initBurgerStack } from './burger-stack.js';
 
 // Hook de progressive enhancement: só liga comportamento condicionado a JS
 // depois que o script carrega, para o CSS poder tratar o caso "sem JS" à parte.
@@ -18,3 +19,6 @@ initHeroVideo();
 // Por último: o movimento assume um DOM já em seu estado final (filtro
 // aplicado, links resolvidos) para medir posições e observar os elementos.
 initMotion();
+
+// No-op fora da Home: só lá existem os [data-burger-stack].
+initBurgerStack();

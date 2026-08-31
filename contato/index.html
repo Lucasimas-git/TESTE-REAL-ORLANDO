@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contato — Franguinn & Hamburguinn</title>
+  <meta name="description" content="Fale com o Franguinn ou com o Hamburguinn pelo WhatsApp. Horário de atendimento, área de entrega e tempo médio de entrega." />
+  <meta name="theme-color" content="#FDF4E4" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Contato — Franguinn & Hamburguinn" />
+  <meta property="og:description" content="Fale com o Franguinn ou com o Hamburguinn pelo WhatsApp. Horário de atendimento, área de entrega e tempo médio de entrega." />
+  <!-- %BASE_URL% e não "/": o Vite reescreve src/href de img e link para
+       incluir o subdiretório do GitHub Pages, mas NÃO mexe em meta[content]. -->
+  <meta property="og:image" content="%BASE_URL%assets/products/hero/franguinn-hero-product.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/base.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+  <link rel="stylesheet" href="/src/styles/page.css" />
+  <link rel="stylesheet" href="/src/styles/hub.css" />
+  <link rel="stylesheet" href="/src/styles/motion.css" />
+</head>
+<body data-brand="franguinn" class="is-hub">
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="page-ambient" aria-hidden="true"></div>
+
+  <header class="page-nav">
+    <div class="shell page-nav__inner">
+      <a class="page-nav__brand" href="../" aria-label="Franguinn &amp; Hamburguinn — voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="44" height="44" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="44" height="44" />
+        </span>
+        <span>
+          <span class="page-nav__name">Franguinn <span class="duo-mark__amp">&amp;</span> Hamburguinn</span>
+          <span class="page-nav__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <nav class="page-nav__links" aria-label="Navegação principal">
+        <a class="page-nav__link" href="../">Home</a>
+        <a class="page-nav__link" href="../cardapio/">Cardápio</a>
+        <a class="page-nav__link" href="../cardapio/#combos">Combos</a>
+        <a class="page-nav__link" href="../sobre/">Sobre</a>
+        <a class="page-nav__link is-active" href="../contato/">Contato</a>
+      </nav>
+
+      <div class="page-nav__end">
+        <a class="world-seal" href="../" aria-label="Dois sabores, uma experiência — ir para a Home">
+          <svg class="world-seal__crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="world-seal__text">Dois sabores</span>
+          <span class="world-seal__text">Uma experiência</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page-main">
+
+    <section class="hub-hero">
+      <div class="shell hub-hero__inner" data-stagger="90">
+        <span class="eyebrow eyebrow--center reveal">Contato</span>
+        <h1 class="hub-hero__title reveal">Fala com a gente. <span class="tint-accent">Escolha o lado.</span></h1>
+        <p class="hub-hero__lead reveal">O pedido sai pelo WhatsApp, direto com a cozinha. Diga o que quer e a gente responde com o tempo de entrega da sua região.</p>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-label="Canais de atendimento">
+      <div class="shell">
+        <div class="hub-duo" data-stagger="110">
+          <!-- href="#" é placeholder: navigation.js injeta o link real do
+               WhatsApp a partir de data-wa, com a mensagem já escrita.
+               Ver config.js para trocar o número. -->
+          <div class="hub-contato reveal reveal--left" data-brand="franguinn">
+            <span class="hub-contato__seal" aria-hidden="true">
+              <img src="/assets/brand/franguinn-mascot.webp" alt="" width="64" height="64" loading="lazy" />
+            </span>
+            <h2 class="hub-contato__title">Franguinn</h2>
+            <p class="hub-contato__text">Frango frito, molhos da casa e combos.</p>
+            <a class="cta cta--franguinn" href="#" data-wa="franguinn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
+            <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.05-1.32A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z" />
+          </svg>
+              Pedir no WhatsApp
+            </a>
+          </div>
+
+          <div class="hub-contato reveal reveal--right" data-brand="hamburguinn">
+            <span class="hub-contato__seal" aria-hidden="true">
+              <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="64" height="64" loading="lazy" />
+            </span>
+            <h2 class="hub-contato__title">Hamburguinn</h2>
+            <p class="hub-contato__text">Smashburger, costela na brasa e combos.</p>
+            <a class="cta cta--hamburguinn" href="#" data-wa="hamburguinn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
+            <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.05-1.32A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z" />
+          </svg>
+              Pedir no WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-label="Informações de atendimento">
+      <div class="shell">
+        <div class="info-strip" data-stagger="110">
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3.5 2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Horário</h3>
+              <!-- TODO(dados reais): confirmar horário de funcionamento -->
+              <p class="info-item__text">Todos os dias, das 17h às 00h.</p>
+              <p class="info-item__meta">Pedidos até 23h30</p>
+            </div>
+          </div>
+
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M12 21s7-5.2 7-10.4A7 7 0 0 0 5 10.6C5 15.8 12 21 12 21z" stroke-linejoin="round" />
+                <circle cx="12" cy="10.4" r="2.6" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Área de entrega</h3>
+              <!-- TODO(dados reais): confirmar bairros atendidos -->
+              <p class="info-item__text">Consulte a sua região pelo WhatsApp — respondemos na hora.</p>
+            </div>
+          </div>
+
+          <div class="info-item reveal">
+            <span class="info-item__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M5 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 18.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                <path d="M7 16.5h9M16 16.5V7h-3.5M16 10h2.2l2.3 4.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div>
+              <h3 class="info-item__title">Tempo de entrega</h3>
+              <p class="info-item__text">Média de 30 a 45 minutos, contando do preparo até a sua porta.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="shell page-footer__inner">
+      <a class="page-nav__brand" href="../" aria-label="Voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="46" height="46" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="46" height="46" />
+        </span>
+        <span>
+          <span class="page-footer__name">Franguinn &amp; Hamburguinn</span>
+          <span class="page-footer__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <div class="page-footer__center">
+        <p class="page-footer__claim">Dois mundos. <span class="tint-accent">Um só lugar.</span></p>
+        <p class="page-footer__sub">Escolha seu lado — ou peça os dois.</p>
+      </div>
+
+      <a class="cta cta--franguinn" href="../cardapio/">Ver o cardápio</a>
+    </div>
+
+    <div class="shell page-footer__legal">
+      <span>© 2026 Franguinn &amp; Hamburguinn. Todos os direitos reservados.</span>
+      <span>
+        <a href="../franguinn/">Franguinn</a> ·
+        <a href="../hamburguinn/">Hamburguinn</a> ·
+        <a href="../contato/">Contato</a>
+      </span>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

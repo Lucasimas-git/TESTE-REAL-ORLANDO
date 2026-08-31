@@ -1,0 +1,382 @@
+/* ==========================================================================
+   PÁGINAS-HUB — cardápio, sobre e contato
+
+   São as páginas que falam pelas DUAS marcas. Só existe aqui o que as
+   páginas de marca não têm: a assinatura dupla, o herói curto e os blocos
+   que colocam Franguinn e Hamburguinn lado a lado. Todo o resto
+   (.section, .menu-card, .info-item, .cta, .shell) vem de page.css e
+   components.css sem uma linha nova.
+
+   O tema base é o do Franguinn (creme, claro) porque é a superfície mais
+   legível para texto corrido. Cada bloco de marca carrega o seu próprio
+   `data-brand` e re-tematiza a si mesmo — o mesmo mecanismo da faixa de
+   troca de mundo em page.css.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Assinatura dupla
+
+   TODO(logo oficial): existe uma arte com os dois mascotes num selo só.
+   Quando o arquivo entrar em public/assets/brand/, trocar o .duo-mark por
+   uma <img> única — a marcação abaixo é a composição em CSS dos dois
+   mascotes que já temos.
+   ========================================================================== */
+
+.duo-mark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.duo-mark img {
+  width: var(--duo-size, 42px);
+  height: var(--duo-size, 42px);
+  object-fit: contain;
+  border-radius: 50%;
+  background: #FFF3DF;
+  border: 2px solid var(--pg-accent);
+  padding: 3px;
+}
+
+/* Sobreposição: os dois selos se tocam, como na Home onde as duas metades
+   dividem a mesma costura. */
+.duo-mark img:last-child {
+  margin-left: calc(var(--duo-size, 42px) * -0.34);
+  border-color: var(--pg-accent-2);
+}
+
+.duo-mark__amp {
+  color: var(--pg-accent);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   2. Herói curto
+
+   As páginas-hub não têm vídeo nem produto em destaque: elas existem para
+   encaminhar. O herói é só a promessa e some rápido da tela.
+   ========================================================================== */
+
+.hub-hero {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(3.5rem, 2.5rem + 8vw, 7rem) clamp(1.5rem, 1rem + 3vw, 3rem);
+  text-align: center;
+}
+
+.hub-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.hub-hero__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.25rem, 1.6rem + 4.5vw, 4.75rem);
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+  text-wrap: balance;
+}
+
+.hub-hero__lead {
+  font-family: var(--font-body);
+  font-size: clamp(0.98rem, 0.92rem + 0.35vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--pg-muted);
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+
+/* ==========================================================================
+   3. Bloco de marca
+
+   Cada metade do cardápio (e da página Sobre) é uma faixa inteira com o
+   tema da sua marca. A troca de fundo é o que separa as duas casas sem
+   precisar de título dizendo "agora é a outra".
+   ========================================================================== */
+
+.hub-brand {
+  position: relative;
+  z-index: 1;
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+  padding-block: clamp(2.5rem, 1.8rem + 5vw, 5rem);
+}
+
+/* Mesma costura da faixa de troca de mundo: a marca não começa, ela
+   assume. */
+.hub-brand + .hub-brand::before,
+.hub-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--pg-accent), var(--pg-accent-2), transparent);
+  opacity: 0.9;
+}
+
+.hub-brand__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.hub-brand__seal {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 4rem + 2vw, 84px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* Creme fixo: no tema Hamburguinn a superfície é quase preta e o
+     mascote (vermelho escuro) sumiria dentro dela. */
+  background: #FFF3DF;
+  border: 2px solid var(--pg-accent);
+  box-shadow: var(--pg-card-shadow);
+  flex-shrink: 0;
+}
+
+.hub-brand__seal img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .hub-brand__head {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--space-4);
+  }
+
+  /* O botão desce para a linha de baixo e ocupa a largura toda: alvo de
+     toque cheio em vez de um link espremido ao lado do título. */
+  .hub-brand__head > .cta {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   4. História (página Sobre) — arte de um lado, texto do outro
+   ========================================================================== */
+
+.hub-story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 4vw, 4rem);
+}
+
+.hub-story__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+/* .section-title e .section-lead nasceram dentro de .section-head, que já
+   distribui o espaçamento por gap. Aqui eles ficam soltos numa coluna, e
+   sem isto o texto encosta na base do título. */
+.hub-story .eyebrow,
+.hub-brand__head .eyebrow {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+}
+
+.hub-story .section-title,
+.hub-brand__head .section-title {
+  margin-bottom: var(--space-3);
+}
+
+.hub-story .section-lead + .section-lead {
+  margin-top: var(--space-3);
+}
+
+.hub-story .cta {
+  margin-top: var(--space-5);
+}
+
+/* Alterna o lado da arte entre as duas marcas, para a página não virar
+   duas fatias idênticas empilhadas. */
+.hub-story--invertido .hub-story__art {
+  order: 2;
+}
+
+@media (max-width: 767px) {
+  .hub-story,
+  .hub-story--invertido {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+
+  /* Empilhado, a arte vem sempre primeiro nas duas: é a imagem que
+     segura a rolagem, e alternar a ordem numa coluna só não comunica
+     nada — só desalinha. */
+  .hub-story__art,
+  .hub-story--invertido .hub-story__art {
+    order: -1;
+  }
+
+  .hub-story .section-lead {
+    margin-inline: auto;
+  }
+}
+
+/* ==========================================================================
+   5. Par de cartões (combos, contato)
+   ========================================================================== */
+
+.hub-duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 0.75rem + 1.5vw, 2rem);
+}
+
+/* ---------- Cartão-portal para o cardápio filtrado ---------- */
+
+.hub-duo__card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: clamp(180px, 14rem + 6vw, 280px);
+  border-radius: var(--radius-lg, 20px);
+  background: var(--pg-surface);
+  border: 1px solid var(--pg-line);
+  box-shadow: var(--pg-card-shadow);
+  isolation: isolate;
+}
+
+.hub-duo__card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 620ms var(--ease-out-soft, ease);
+}
+
+.hub-duo__card:hover img {
+  transform: scale(1.06);
+}
+
+/* Véu de baixo para cima: o texto precisa de contraste garantido sobre
+   uma foto que muda de tom em cada cartão. */
+.hub-duo__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10, 4, 3, 0.15) 0%, rgba(10, 4, 3, 0.55) 55%, rgba(10, 4, 3, 0.92) 100%);
+}
+
+.hub-duo__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-5);
+  padding-right: calc(var(--space-5) + 2.5rem);
+}
+
+.hub-duo__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.1rem, 1rem + 0.8vw, 1.6rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #FFF3DF;
+}
+
+.hub-duo__text {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(255, 243, 223, 0.78);
+}
+
+.hub-duo__go {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pg-accent);
+  color: #FFF7EA;
+  font-size: 1.1rem;
+  transition: transform 320ms var(--ease-out-back, ease);
+}
+
+.hub-duo__card:hover .hub-duo__go {
+  transform: translateX(4px);
+}
+
+/* ---------- Cartão de contato ---------- */
+
+.hub-contato {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: clamp(1.5rem, 1.2rem + 2vw, 2.5rem);
+  border-radius: var(--radius-lg, 20px);
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+  border: 1px solid var(--pg-line);
+  box-shadow: var(--pg-card-shadow);
+}
+
+.hub-contato__seal {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FFF3DF;
+  border: 2px solid var(--pg-accent);
+}
+
+.hub-contato__seal img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.hub-contato__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.3rem, 1.1rem + 1vw, 1.9rem);
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+}
+
+.hub-contato__text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--pg-muted);
+  margin-bottom: var(--space-2);
+}
+
+/* O botão fecha o cartão ocupando a largura toda — no celular é o alvo
+   principal e não pode depender de acertar um texto curto. */
+.hub-contato .cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: auto;
+}
+
+@media (max-width: 767px) {
+  .hub-duo {
+    grid-template-columns: 1fr;
+  }
+}

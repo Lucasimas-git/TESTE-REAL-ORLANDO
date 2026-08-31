@@ -421,3 +421,136 @@
     transition: none;
   }
 }
+
+/* ==========================================================================
+   9. Montagem do lanche (Home)
+
+   A foto de cada lanche é fatiada por ingrediente em cópias recortadas com
+   `clip-path` — ver burger-stack.js para o porquê e para as medidas. Aqui
+   ficam só os estados.
+
+   Todas as fatias ocupam a MESMA célula de grid (`grid-area: stack`,
+   declarada em home.css) e herdam de .side__product-img todo o
+   dimensionamento responsivo, inclusive os overrides por breakpoint. Logo
+   a caixa de uma fatia é idêntica à da foto base, e as % do recorte caem
+   onde foram medidas em qualquer largura de tela.
+   ========================================================================== */
+
+.side__product .burger-stack__layer {
+  clip-path: var(--recorte);
+  /* Repouso = montado. As fatias esperam aqui antes da entrada e voltam
+     para cá no fim; deslocamento zero, foto recomposta. */
+  transform: translate3d(var(--brand-shift, 0%), 0, 0);
+  opacity: 0;
+  pointer-events: auto;
+  /* .side__product-img traz um drop-shadow por marca. Multiplicado por
+     cinco fatias em movimento, viram cinco filtros recalculados a cada
+     frame — o suficiente para picotar a rolagem num celular médio. */
+  filter: none;
+}
+
+/* A exceção é o pão de baixo: é a fatia que encosta no piso, e a sombra
+   dela é o que impede o lanche de parecer colado na tela. Uma só. */
+.side__product .burger-stack__layer--chao {
+  filter: drop-shadow(0 14px 14px rgba(60, 26, 6, 0.28));
+}
+
+/* Enquanto as fatias não existem, quem aparece é a foto inteira: sem JS,
+   sem IntersectionObserver ou com "menos movimento", a Home fica exatamente
+   como sempre foi. A base só sai de cena no instante em que a montagem
+   começa — e nesse instante a primeira fatia já está entrando. */
+.side__product.is-montando > .side__product-img:not(.burger-stack__layer),
+.side__product.is-montado > .side__product-img:not(.burger-stack__layer) {
+  visibility: hidden;
+}
+
+.side__product.is-montando .burger-stack__layer {
+  animation: montar-lanche 1100ms var(--ease-out-soft) both;
+  /* --nivel 0 é o pão de baixo. Ele entra primeiro e os ingredientes
+     pousam sobre ele, na ordem em que seriam montados na chapa. */
+  animation-delay: calc(var(--nivel) * 85ms);
+  will-change: transform, opacity;
+}
+
+@keyframes montar-lanche {
+  /* Chega de baixo e um pouco além da posição suspensa, para o freio no
+     fim do movimento ler como peso e não como slide. */
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--brand-shift, 0%), calc(var(--sobe) * var(--abre, 1) * 1.5), 0)
+      rotate(var(--gira)) scale(1.05);
+  }
+  26% {
+    opacity: 1;
+    transform: translate3d(var(--brand-shift, 0%), calc(var(--sobe) * var(--abre, 1)), 0)
+      rotate(var(--gira)) scale(1.02);
+  }
+  /* Pausa com tudo no ar: é o frame do storyboard em que as camadas ficam
+     suspensas antes de fechar. Sem essa parada a montagem vira um borrão. */
+  46% {
+    opacity: 1;
+    transform: translate3d(var(--brand-shift, 0%), calc(var(--sobe) * var(--abre, 1)), 0)
+      rotate(var(--gira)) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--brand-shift, 0%), 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Terminada a montagem, a declaração de `animation` precisa sair: uma
+   animação com fill-mode ganha da cascata normal, e enquanto ela existir o
+   transform da espiada abaixo é simplesmente ignorado. */
+.side__product.is-montado .burger-stack__layer {
+  animation: none;
+  opacity: 1;
+  will-change: auto;
+  transition: transform 560ms var(--ease-out-soft);
+  transition-delay: calc(var(--nivel) * 35ms);
+}
+
+/* ---------- Espiada: o lanche abre de leve e mostra o recheio ----------
+
+   Metade do deslocamento da montagem — o suficiente para separar as
+   camadas e ler os ingredientes, sem desmontar o lanche de novo. */
+
+@media (hover: hover) and (pointer: fine) {
+  .side__product.is-montado:hover .burger-stack__layer {
+    transform: translate3d(var(--brand-shift, 0%), calc(var(--sobe) * var(--abre, 1) * 0.5), 0);
+  }
+}
+
+/* No toque não existe hover: a mesma abertura vem de um toque no lanche,
+   alternando (burger-stack.js só liga isto em ponteiro grosso). */
+.side__product.is-montado.is-aberto .burger-stack__layer {
+  transform: translate3d(var(--brand-shift, 0%), calc(var(--sobe) * var(--abre, 1) * 0.55), 0);
+}
+
+/* O brilho atrás do produto respira junto com a abertura, para o lanche
+   não parecer se descolar de um fundo parado. */
+.side__product-glow {
+  transition: transform 560ms var(--ease-out-soft), opacity 560ms var(--ease-out-soft);
+}
+
+.side__product.is-montado.is-aberto .side__product-glow,
+.side__product.is-montado:hover .side__product-glow {
+  transform: scale(1.08);
+  opacity: 0.85;
+}
+
+/* ---------- Montagem no celular ----------
+
+   Empilhado, o produto fica logo abaixo do slogan do lado, com pouca
+   folga. A explosão em tamanho de desktop faz o pão de cima subir por
+   cima do texto no meio da animação.
+
+   --abre encolhe a abertura inteira de uma vez (a mesma variável vale
+   para a montagem e para a espiada), e a folga extra acima do produto
+   devolve o espaço que a subida precisa. Somados, o pão sobe menos e
+   sobe dentro do próprio espaço. */
+@media (max-width: 767px) {
+  .side__product {
+    --abre: 0.62;
+    margin-top: var(--space-5);
+  }
+}
