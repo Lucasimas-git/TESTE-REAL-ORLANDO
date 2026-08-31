@@ -36,21 +36,32 @@
   <link rel="stylesheet" href="/src/styles/components.css" />
   <link rel="stylesheet" href="/src/styles/home.css" />
   <link rel="stylesheet" href="/src/styles/responsive.css" />
+  <!-- Na Home só entram os tokens de movimento e o retorno ao toque; os
+       componentes animados (.reveal, marquee, barra de pedido) não existem
+       nesta página e as regras ficam inertes. -->
+  <link rel="stylesheet" href="/src/styles/motion.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
 
-  <!-- TODO: Cardápio / Combos / Sobre / Contato ainda não existem como páginas —
-       a arquitetura atual só cobre Home, /franguinn/ e /hamburguinn/. Os links
-       abaixo são visuais nesta fase e não quebram (apontam para "#"). -->
+  <!-- Cada item leva para a página que apresenta AS DUAS marcas, não para
+       dentro de uma delas. Da tela de escolha, um menu que já escolhesse
+       por quem clica anularia a própria escolha que a página propõe.
+
+       A cor de cada item continua seguindo o lado em que ele pousa sobre o
+       herói dividido (ver site-nav__list li:nth-child(4) e (5) no CSS) —
+       isso é composição, não destino. -->
   <header class="site-nav">
     <nav aria-label="Navegação principal">
       <ul class="site-nav__list">
         <li><a href="./" class="site-nav__link is-active">Home</a></li>
-        <li><a href="#" class="site-nav__link">Cardápio</a></li>
-        <li><a href="#" class="site-nav__link"><span class="nav-combos-left">Com</span><span class="nav-combos-right">bos</span></a></li>
-        <li><a href="#" class="site-nav__link">Sobre</a></li>
-        <li><a href="#" class="site-nav__link">Contato</a></li>
+        <li><a href="cardapio/" class="site-nav__link">Cardápio</a></li>
+        <!-- ?cat=combos abre o cardápio já filtrado. Um "#combo-x" não
+             serviria: sob outro filtro o card está hidden, e o navegador
+             não rola até elemento oculto. Ver initialFilter em menu.js. -->
+        <li><a href="cardapio/#combos" class="site-nav__link"><span class="nav-combos-left">Com</span><span class="nav-combos-right">bos</span></a></li>
+        <li><a href="sobre/" class="site-nav__link">Sobre</a></li>
+        <li><a href="contato/" class="site-nav__link">Contato</a></li>
       </ul>
     </nav>
   </header>
@@ -89,7 +100,7 @@
         </div>
       </div>
 
-      <div class="side__product">
+      <div class="side__product" data-burger-stack="franguinn">
         <div class="side__product-shadow" aria-hidden="true"></div>
         <div class="side__product-glow" aria-hidden="true"></div>
         <img
@@ -137,7 +148,7 @@
         </div>
       </div>
 
-      <div class="side__product">
+      <div class="side__product" data-burger-stack="hamburguinn">
         <div class="side__product-shadow" aria-hidden="true"></div>
         <div class="side__product-glow" aria-hidden="true"></div>
         <img

@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cardápio — Franguinn & Hamburguinn</title>
+  <meta name="description" content="O cardápio das duas marcas num lugar só: frango frito crocante do Franguinn e smashburger com costela do Hamburguinn. Escolha seu lado e peça pelo WhatsApp." />
+  <meta name="theme-color" content="#FDF4E4" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Cardápio — Franguinn & Hamburguinn" />
+  <meta property="og:description" content="O cardápio das duas marcas num lugar só: frango frito crocante do Franguinn e smashburger com costela do Hamburguinn. Escolha seu lado e peça pelo WhatsApp." />
+  <!-- %BASE_URL% e não "/": o Vite reescreve src/href de img e link para
+       incluir o subdiretório do GitHub Pages, mas NÃO mexe em meta[content]. -->
+  <meta property="og:image" content="%BASE_URL%assets/products/hero/franguinn-hero-product.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/src/styles/tokens.css" />
+  <link rel="stylesheet" href="/src/styles/base.css" />
+  <link rel="stylesheet" href="/src/styles/components.css" />
+  <link rel="stylesheet" href="/src/styles/page.css" />
+  <link rel="stylesheet" href="/src/styles/hub.css" />
+  <link rel="stylesheet" href="/src/styles/motion.css" />
+</head>
+<body data-brand="franguinn" class="is-hub">
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="page-ambient" aria-hidden="true"></div>
+
+  <header class="page-nav">
+    <div class="shell page-nav__inner">
+      <a class="page-nav__brand" href="../" aria-label="Franguinn &amp; Hamburguinn — voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="44" height="44" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="44" height="44" />
+        </span>
+        <span>
+          <span class="page-nav__name">Franguinn <span class="duo-mark__amp">&amp;</span> Hamburguinn</span>
+          <span class="page-nav__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <nav class="page-nav__links" aria-label="Navegação principal">
+        <a class="page-nav__link" href="../">Home</a>
+        <a class="page-nav__link is-active" href="../cardapio/">Cardápio</a>
+        <a class="page-nav__link" href="#combos">Combos</a>
+        <a class="page-nav__link" href="../sobre/">Sobre</a>
+        <a class="page-nav__link" href="../contato/">Contato</a>
+      </nav>
+
+      <div class="page-nav__end">
+        <a class="world-seal" href="../" aria-label="Dois sabores, uma experiência — ir para a Home">
+          <svg class="world-seal__crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="world-seal__text">Dois sabores</span>
+          <span class="world-seal__text">Uma experiência</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page-main">
+
+    <section class="hub-hero">
+      <div class="shell hub-hero__inner" data-stagger="90">
+        <span class="eyebrow eyebrow--center reveal">Cardápio</span>
+        <h1 class="hub-hero__title reveal">Dois cardápios. <span class="tint-accent">Uma fome só.</span></h1>
+        <p class="hub-hero__lead reveal">De um lado o frango empanado na hora. Do outro o smash na chapa com costela na brasa. Comece por onde quiser — o pedido sai pelo mesmo WhatsApp.</p>
+      </div>
+    </section>
+
+    <!-- data-brand aqui dentro re-tematiza a seção inteira (ver page.css).
+         É o que faz as duas metades do cardápio parecerem duas casas. -->
+    <section class="hub-brand" data-brand="franguinn" id="franguinn" aria-labelledby="cardapio-franguinn">
+      <div class="shell">
+        <div class="hub-brand__head" data-stagger="80">
+          <span class="hub-brand__seal reveal reveal--zoom" aria-hidden="true">
+            <img src="/assets/brand/franguinn-mascot.webp" alt="" width="72" height="72" loading="lazy" />
+          </span>
+          <div>
+            <h2 class="section-title reveal" id="cardapio-franguinn">Franguinn</h2>
+            <p class="section-lead reveal">Frango 100% peito, empanado na hora e frito até crocar de verdade.</p>
+          </div>
+          <a class="cta cta--franguinn reveal" href="../franguinn/#cardapio">
+            Cardápio completo
+            <span class="cta__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="menu-grid" data-stagger="80">
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                <span class="menu-card__badge menu-card__badge--new">Mais pedido</span>
+                <img src="/assets/products/franguinn/franguinn-01.webp" alt="Franguinn Crispy: frango empanado crocante com fatia de queijo cheddar no pão brioche" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">Franguinn Crispy</h3>
+                <p class="menu-card__text">Frango crocante, queijo cheddar e maionese da casa.</p>
+                <a class="cta cta--franguinn menu-card__cta" href="#" data-wa="franguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                
+                <img src="/assets/products/franguinn/franguinn-02.webp" alt="BBQ Crunch: frango crocante com cheddar derretido, slaw e molho barbecue" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">BBQ Crunch</h3>
+                <p class="menu-card__text">Cheddar derretido, slaw e molho barbecue defumado.</p>
+                <a class="cta cta--franguinn menu-card__cta" href="#" data-wa="franguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                
+                <img src="/assets/products/franguinn/franguinn-03.webp" alt="Combo Franguinn: sanduíche de frango crocante com batata e bebida" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">Combo Franguinn</h3>
+                <p class="menu-card__text">Sanduíche, batata e bebida. O clássico da casa.</p>
+                <a class="cta cta--franguinn menu-card__cta" href="#" data-wa="franguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="hub-brand" data-brand="hamburguinn" id="hamburguinn" aria-labelledby="cardapio-hamburguinn">
+      <div class="shell">
+        <div class="hub-brand__head" data-stagger="80">
+          <span class="hub-brand__seal reveal reveal--zoom" aria-hidden="true">
+            <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="72" height="72" loading="lazy" />
+          </span>
+          <div>
+            <h2 class="section-title reveal" id="cardapio-hamburguinn">Hamburguinn</h2>
+            <p class="section-lead reveal">Blend artesanal prensado na chapa, costela na brasa e molhos da casa.</p>
+          </div>
+          <a class="cta cta--hamburguinn reveal" href="../hamburguinn/#cardapio">
+            Cardápio completo
+            <span class="cta__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="menu-grid" data-stagger="80">
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                <span class="menu-card__badge menu-card__badge--new">Mais pedido</span>
+                <img src="/assets/products/hamburguinn/hamburguinn-01.webp" alt="Smash duplo Hamburguinn com cheddar derretido e cebola caramelizada" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">Smash Duplo</h3>
+                <p class="menu-card__text">Dois blends prensados, cheddar duplo e cebola caramelizada.</p>
+                <a class="cta cta--hamburguinn menu-card__cta" href="#" data-wa="hamburguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                
+                <img src="/assets/products/hamburguinn/hamburguinn-costela-hero.webp" alt="Hambúrguer com costela desfiada na brasa, cheddar e molho barbecue" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">Costela na Brasa</h3>
+                <p class="menu-card__text">Costela desfiada lentamente, cheddar e barbecue da casa.</p>
+                <a class="cta cta--hamburguinn menu-card__cta" href="#" data-wa="hamburguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+
+            <article class="menu-card reveal">
+              <div class="menu-card__media">
+                
+                <img src="/assets/products/hamburguinn/hamburguinn-03.webp" alt="Combo Hamburguinn: smashburger com batata rústica e bebida" loading="lazy" width="900" height="900" />
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__title">Combo Hamburguinn</h3>
+                <p class="menu-card__text">Smash, batata rústica e bebida. Tudo que precisa.</p>
+                <a class="cta cta--hamburguinn menu-card__cta" href="#" data-wa="hamburguinn">Pedir no WhatsApp</a>
+              </div>
+            </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         COMBOS
+         O item "Combos" do menu aponta para cá. Cada cartão abre o cardápio
+         da marca JÁ FILTRADO, via ?cat=combos — um "#id" não serviria,
+         porque sob outro filtro o card está oculto e o navegador não rola
+         até elemento escondido. Ver initialFilter em menu.js.
+         ==================================================================== -->
+    <section class="section section--tight" id="combos" aria-labelledby="combos-titulo">
+      <div class="shell">
+        <div class="section-head section-head--center" data-stagger="90">
+          <span class="eyebrow eyebrow--center reveal">Combos</span>
+          <h2 class="section-title reveal" id="combos-titulo">Fome grande? <span class="tint-accent">Vai de combo.</span></h2>
+          <p class="section-lead reveal">Sanduíche, acompanhamento e bebida no mesmo pedido — dos dois lados da casa.</p>
+        </div>
+
+        <div class="hub-duo" data-stagger="110">
+          <a class="hub-duo__card reveal reveal--left" data-brand="franguinn" href="../franguinn/?cat=combos#cardapio">
+            <img src="/assets/products/franguinn/franguinn-03.webp" alt="" loading="lazy" width="900" height="900" />
+            <span class="hub-duo__body">
+              <span class="hub-duo__title">Combos Franguinn</span>
+              <span class="hub-duo__text">Crocante, batata e bebida.</span>
+              <span class="hub-duo__go" aria-hidden="true">→</span>
+            </span>
+          </a>
+
+          <a class="hub-duo__card reveal reveal--right" data-brand="hamburguinn" href="../hamburguinn/?cat=combos#cardapio">
+            <img src="/assets/products/hamburguinn/hamburguinn-03.webp" alt="" loading="lazy" width="900" height="900" />
+            <span class="hub-duo__body">
+              <span class="hub-duo__title">Combos Hamburguinn</span>
+              <span class="hub-duo__text">Smash, batata rústica e bebida.</span>
+              <span class="hub-duo__go" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="shell page-footer__inner">
+      <a class="page-nav__brand" href="../" aria-label="Voltar para a Home">
+        <span class="duo-mark" aria-hidden="true">
+          <img src="/assets/brand/franguinn-mascot.webp" alt="" width="46" height="46" />
+          <img src="/assets/brand/hamburguinn-mascot.webp" alt="" width="46" height="46" />
+        </span>
+        <span>
+          <span class="page-footer__name">Franguinn &amp; Hamburguinn</span>
+          <span class="page-footer__tagline">Dois mundos, um só lugar</span>
+        </span>
+      </a>
+
+      <div class="page-footer__center">
+        <p class="page-footer__claim">Dois mundos. <span class="tint-accent">Um só lugar.</span></p>
+        <p class="page-footer__sub">Escolha seu lado — ou peça os dois.</p>
+      </div>
+
+      <a class="cta cta--franguinn" href="../cardapio/">Ver o cardápio</a>
+    </div>
+
+    <div class="shell page-footer__legal">
+      <span>© 2026 Franguinn &amp; Hamburguinn. Todos os direitos reservados.</span>
+      <span>
+        <a href="../franguinn/">Franguinn</a> ·
+        <a href="../hamburguinn/">Hamburguinn</a> ·
+        <a href="../contato/">Contato</a>
+      </span>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

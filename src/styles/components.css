@@ -4,6 +4,10 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-5);
+  /* O padding sozinho entregava 41–43px de altura, logo abaixo dos 44 que
+     um dedo alcança com segurança. Como é o botão de PEDIDO, é o alvo que
+     menos pode falhar no celular. */
+  min-height: 44px;
   border-radius: var(--radius-full);
   font-family: var(--font-body);
   font-weight: 700;

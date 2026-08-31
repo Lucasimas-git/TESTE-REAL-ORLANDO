@@ -20,7 +20,11 @@
     property="og:description"
     content="Smash burgers artesanais com alma. Ingredientes selecionados e combinações que viciam."
   />
-  <meta property="og:image" content="/assets/products/hamburguinn/hamburguinn-costela-hero.webp" />
+  <!-- %BASE_URL% e não "/": o Vite reescreve src/href de img, video e link
+       para incluir o subdiretório do GitHub Pages, mas NÃO mexe em
+       meta[content]. Sem o placeholder, a prévia do link no WhatsApp
+       apontaria para /assets/... na raiz do domínio e viria sem imagem. -->
+  <meta property="og:image" content="%BASE_URL%assets/products/hamburguinn/hamburguinn-costela-hero.webp" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,6 +38,7 @@
   <link rel="stylesheet" href="/src/styles/base.css" />
   <link rel="stylesheet" href="/src/styles/components.css" />
   <link rel="stylesheet" href="/src/styles/page.css" />
+  <link rel="stylesheet" href="/src/styles/motion.css" />
 </head>
 <body data-brand="hamburguinn">
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
@@ -57,8 +62,11 @@
         </span>
       </a>
 
+      <!-- "Início" e não "Home": o logo ao lado e o rodapé já usam "Home"
+           para a página de escolha das duas marcas. Dois destinos
+           diferentes com o mesmo nome, lado a lado, confundem. -->
       <nav class="page-nav__links" aria-label="Navegação do Hamburguinn">
-        <a class="page-nav__link is-active" href="#main">Home</a>
+        <a class="page-nav__link is-active" href="#main">Início</a>
         <a class="page-nav__link" href="#cardapio">Cardápio</a>
         <a class="page-nav__link" href="#cardapio" data-filter-link="combos">Combos</a>
         <a class="page-nav__link" href="#sobre">Sobre</a>
@@ -83,26 +91,26 @@
          HERO
          ====================================================================== -->
     <section class="page-hero">
-      <div class="shell page-hero__grid">
+      <div class="shell page-hero__grid" data-stagger="70">
         <div class="page-hero__copy">
-          <h1 class="page-hero__title">
+          <h1 class="page-hero__title reveal">
             <span>Esmagado.</span>
             <span class="tint-accent">Tostado.</span>
             <span class="tint-deep">Apaixonante.</span>
           </h1>
 
-          <p class="page-hero__rule" aria-hidden="true">
+          <p class="page-hero__rule reveal" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
               <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </p>
 
-          <p class="page-hero__text">
+          <p class="page-hero__text reveal">
             Smash burgers artesanais com alma. Ingredientes selecionados e
             combinações que <strong>viciam</strong>.
           </p>
 
-          <div class="page-hero__actions">
+          <div class="page-hero__actions reveal">
             <a class="cta cta--hamburguinn" href="#" data-wa="hamburguinn">
               <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
                 <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
@@ -116,7 +124,7 @@
             </a>
           </div>
 
-          <ul class="hero-badges">
+          <ul class="hero-badges reveal">
             <li class="hero-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path d="M12 22a6 6 0 0 0 6-6c0-4-6-10-6-10S6 12 6 16a6 6 0 0 0 6 6z" stroke-linejoin="round" />
@@ -141,7 +149,7 @@
           </ul>
         </div>
 
-        <div class="page-hero__media">
+        <div class="page-hero__media reveal reveal--zoom">
           <a class="world-seal page-hero__seal" href="../" aria-label="Dois sabores, uma experiência — ir para a Home">
             <svg class="world-seal__crown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
@@ -185,17 +193,53 @@
     </section>
 
     <!-- ======================================================================
+         FAIXA CORRIDA
+         O grupo é duplicado de propósito: a animação desloca a trilha em
+         -50%, então no instante do loop a segunda cópia está exatamente
+         onde a primeira começou e a emenda não aparece. aria-hidden porque
+         para quem ouve a página isso seria a mesma lista lida duas vezes.
+         ====================================================================== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Prensado na chapa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Blend artesanal</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Costela na brasa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Molhos da casa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Delivery sem fronteiras</span>
+          <span class="marquee__dot"></span>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">Prensado na chapa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Blend artesanal</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Costela na brasa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Molhos da casa</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Delivery sem fronteiras</span>
+          <span class="marquee__dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
          CATEGORIAS — "Escolha sua experiência"
          ====================================================================== -->
     <section class="section section--tight" aria-labelledby="sabores-heading">
       <div class="shell">
-        <div class="section-head" style="margin-bottom: var(--space-6)">
+        <div class="section-head reveal" style="margin-bottom: var(--space-6)">
           <span class="eyebrow">Nossos sabores</span>
           <h2 class="section-title" id="sabores-heading">Escolha sua experiência</h2>
         </div>
 
-        <div class="cat-grid">
-          <a class="cat-card" href="#cardapio" data-filter-link="smashs">
+        <div class="cat-grid" data-stagger="110">
+          <a class="cat-card reveal" href="#cardapio" data-filter-link="smashs">
             <div class="cat-card__body">
               <h3 class="cat-card__title">Smashs</h3>
               <p class="cat-card__text">Carne prensada na chapa até criar aquela crosta caramelizada.</p>
@@ -206,7 +250,7 @@
             </div>
           </a>
 
-          <a class="cat-card" href="#cardapio" data-filter-link="especiais">
+          <a class="cat-card reveal" href="#cardapio" data-filter-link="especiais">
             <div class="cat-card__body">
               <h3 class="cat-card__title">Especiais</h3>
               <p class="cat-card__text">Criações fora da curva, com ingredientes que fogem do óbvio.</p>
@@ -217,7 +261,7 @@
             </div>
           </a>
 
-          <a class="cat-card" href="#cardapio" data-filter-link="combos">
+          <a class="cat-card reveal" href="#cardapio" data-filter-link="combos">
             <div class="cat-card__body">
               <h3 class="cat-card__title">Combos</h3>
               <p class="cat-card__text">Burger, acompanhamento e bebida para fechar a noite do jeito certo.</p>
@@ -236,25 +280,28 @@
          ====================================================================== -->
     <section class="section" id="cardapio" data-menu>
       <div class="shell">
-        <div class="section-head section-head--split">
-          <span class="eyebrow">Cardápio</span>
-          <h2 class="section-title">
+        <div class="section-head section-head--split" data-stagger="90">
+          <span class="eyebrow reveal">Cardápio</span>
+          <h2 class="section-title reveal">
             Escolha <span class="tint-accent">seu</span> <span class="tint-deep">mundo.</span>
           </h2>
-          <p class="section-lead">
+          <p class="section-lead reveal">
             Smashs, costela, frango e combinações únicas feitas com ingredientes
             selecionados e muito sabor em cada detalhe.
           </p>
         </div>
 
-        <div class="chip-row" role="tablist" aria-label="Filtrar cardápio">
-          <button class="chip" type="button" role="tab" data-filter="destaque" aria-selected="true">
+        <!-- role="group" + aria-pressed, e não tablist/tab: role="tab" exige
+             um tabpanel associado e navegação por setas do teclado, nada
+             disso existe aqui. São botões de alternância independentes. -->
+        <div class="chip-row" role="group" aria-label="Filtrar cardápio">
+          <button class="chip" type="button" data-filter="destaque" aria-pressed="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.4l6-.8L12 3z" stroke-linejoin="round" />
             </svg>
             Destaques
           </button>
-          <button class="chip" type="button" role="tab" data-filter="smashs" aria-selected="false">
+          <button class="chip" type="button" data-filter="smashs" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M3 10c0-3.3 4-6 9-6s9 2.7 9 6" stroke-linecap="round" />
               <path d="M3 13.5h18" stroke-linecap="round" />
@@ -262,13 +309,13 @@
             </svg>
             Smashs
           </button>
-          <button class="chip" type="button" role="tab" data-filter="especiais" aria-selected="false">
+          <button class="chip" type="button" data-filter="especiais" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8z" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             Especiais
           </button>
-          <button class="chip" type="button" role="tab" data-filter="combos" aria-selected="false">
+          <button class="chip" type="button" data-filter="combos" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M6 8h12l-1 12H7L6 8z" stroke-linejoin="round" />
               <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round" />
@@ -413,11 +460,16 @@
             <p class="section-lead" data-menu-empty hidden>
               Nenhum item nesta categoria por enquanto.
             </p>
+
+            <!-- Trocar de filtro muda a tela sem mexer no foco: quem usa
+                 leitor de tela não receberia aviso nenhum. Esta região
+                 anuncia o resultado da troca. -->
+            <p class="visually-hidden" role="status" aria-live="polite" data-menu-status></p>
           </div>
 
           <!-- Coluna de diferenciais (layout da referência do cardápio escuro) -->
-          <div class="aside-list" id="sobre">
-            <div class="aside-item">
+          <div class="aside-list" id="sobre" data-stagger="110">
+            <div class="aside-item reveal reveal--right">
               <span class="aside-item__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                   <path d="M10 3h4v2.6l1.8 2.7a3 3 0 0 1 .5 1.7V19a2 2 0 0 1-2 2h-4.6a2 2 0 0 1-2-2V10a3 3 0 0 1 .5-1.7L10 5.6V3z" stroke-linejoin="round" />
@@ -430,7 +482,7 @@
               </div>
             </div>
 
-            <div class="aside-item">
+            <div class="aside-item reveal reveal--right">
               <span class="aside-item__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                   <path d="M12 22a6 6 0 0 0 6-6c0-4-6-10-6-10S6 12 6 16a6 6 0 0 0 6 6z" stroke-linejoin="round" />
@@ -443,7 +495,7 @@
               </div>
             </div>
 
-            <div class="aside-item">
+            <div class="aside-item reveal reveal--right">
               <span class="aside-item__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
                   <path d="M6 8h12l-1 12H7L6 8z" stroke-linejoin="round" />
@@ -465,7 +517,7 @@
          ====================================================================== -->
     <section class="section section--tight" id="contato">
       <div class="shell">
-        <div class="cta-band">
+        <div class="cta-band reveal reveal--zoom">
           <div>
             <h2 class="cta-band__title">Fome bateu? <span class="tint-accent">A gente chega até você.</span></h2>
             <p class="cta-band__text">
@@ -487,7 +539,68 @@
         </div>
       </div>
     </section>
+
+    <!-- ====================================================================
+         TROCA DE MUNDO
+         data-brand aqui dentro re-tematiza a seção inteira para a OUTRA
+         marca (ver page.css). É de propósito: a virada de paleta é o
+         próprio convite.
+         ==================================================================== -->
+    <section class="world-switch" data-brand="franguinn" aria-labelledby="troca-titulo">
+      <div class="shell world-switch__inner" data-stagger="90">
+        <div class="world-switch__art reveal reveal--zoom">
+          <span class="world-switch__glow" aria-hidden="true"></span>
+          <span class="world-switch__frame">
+            <img
+            class="world-switch__product"
+            src="/assets/products/hero/franguinn-hero-product.webp"
+            alt="Sanduíche de frango crocante Franguinn, com cheddar e salada da casa"
+            loading="lazy"
+            width="1300"
+            height="867"
+          />
+            <span class="world-switch__seal" aria-hidden="true">
+              <img src="/assets/brand/franguinn-mascot.webp" alt="" width="88" height="88" loading="lazy" />
+            </span>
+          </span>
+        </div>
+
+        <div class="world-switch__body">
+          <span class="eyebrow reveal">O outro mundo</span>
+          <h2 class="world-switch__title reveal" id="troca-titulo">
+            Encarou o smash. <span>Agora prova o crocante.</span>
+          </h2>
+          <p class="world-switch__text reveal">Frango 100% peito, empanado na hora e frito até crocar de verdade. O Franguinn é a outra metade da história — e fica a um clique daqui.</p>
+          <a class="cta cta--franguinn reveal" href="../franguinn/">
+            Entrar no Franguinn
+            <span class="cta__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- ========================================================================
+       BARRA FIXA DE PEDIDO (só aparece no celular, via CSS)
+
+       Fica no HTML e não é criada em JS porque initWhatsappLinks precisa
+       encontrá-la para injetar o link — um botão criado depois ficaria sem
+       href. Ela entra depois do herói e sai quando o rodapé chega, para
+       nunca cobrir os links finais.
+       ======================================================================== -->
+  <div class="order-bar" data-order-bar>
+    <div>
+      <p class="order-bar__label">Fome bateu?</p>
+      <p class="order-bar__meta">Todos os dias, 17h–00h</p>
+    </div>
+    <a class="cta cta--hamburguinn" href="#" data-wa="hamburguinn">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+        <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
+        <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.05-1.32A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z" />
+      </svg>
+      Pedir agora
+    </a>
+  </div>
 
   <footer class="page-footer">
     <div class="shell page-footer__inner">

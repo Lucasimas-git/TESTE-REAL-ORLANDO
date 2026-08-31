@@ -105,6 +105,17 @@ body[data-brand] {
   padding-block: clamp(2rem, 1.4rem + 3vw, 3.5rem);
 }
 
+/* O cabeçalho é sticky: sem esta margem, chegar em #cardapio por link
+   direto ou pelo botão "voltar" do navegador deixa o título da seção
+   escondido atrás da barra. navigation.js mede a altura real no clique;
+   isto cobre os caminhos que não passam por JS (URL colada, histórico). */
+[id='cardapio'],
+[id='sobre'],
+[id='contato'],
+[id='main'] {
+  scroll-margin-top: clamp(80px, 70px + 2vh, 100px);
+}
+
 /* ==========================================================================
    Navegação das páginas internas
    ========================================================================== */
@@ -640,7 +651,11 @@ body[data-brand] {
   border-color: color-mix(in srgb, var(--pg-accent) 45%, transparent);
 }
 
-.chip[aria-selected='true'] {
+/* aria-pressed, e não aria-selected: `selected` pertence a role="tab", que
+   obriga a um tabpanel e à navegação por setas do teclado. Estes são botões
+   de alternância independentes — `pressed` é o estado que descreve o que
+   eles realmente fazem, e o leitor de tela anuncia certo. */
+.chip[aria-pressed='true'] {
   background: var(--pg-accent);
   border-color: var(--pg-accent);
   color: #FFF3DF;
@@ -1161,13 +1176,68 @@ body[data-brand] {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* No desktop o card de categoria é texto à esquerda e foto sangrando à
+     direita. Em 375px essa divisão deixa a coluna de texto com ~240px e a
+     foto com uma tira inútil de 100px. Empilhado — foto ocupando o card
+     inteiro, texto por cima de um véu escuro — a foto volta a ser
+     apetitosa e o texto ganha a largura toda. */
+  .cat-card {
+    min-height: 210px;
+  }
+
+  .cat-card__media {
+    inset: 0;
+  }
+
+  .cat-card__media::after {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 4, 3, 0.25) 0%,
+      rgba(10, 4, 3, 0.72) 55%,
+      rgba(10, 4, 3, 0.92) 100%
+    );
+  }
+
   .cat-card__body {
-    width: 68%;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .cat-card__title,
+  .cat-card__text {
+    color: #FFF3DF;
+  }
+
+  .cat-card__go {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    margin-top: 0;
   }
 
   .page-hero__actions .cta {
     flex: 1 1 220px;
     justify-content: center;
+  }
+
+  /* Alvos de toque: o link tinha ~30px de altura, abaixo dos 44px que
+     tanto a Apple quanto o Google recomendam como mínimo confortável. O
+     texto não cresce — cresce a área clicável em volta dele. */
+  .page-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0;
+  }
+
+  .page-nav__links {
+    gap: var(--space-5);
+    padding-top: 0;
+  }
+
+  .video-sound {
+    width: 46px;
+    height: 46px;
   }
 
   /* O selo do nav é decorativo e duplica o destino do logo (Home). Num
@@ -1213,5 +1283,169 @@ body[data-brand] {
 
   .chip {
     flex-shrink: 0;
+  }
+}
+
+/* ==========================================================================
+   TROCA DE MUNDO — a ponte entre as duas marcas
+
+   Fecha cada página de marca convidando para a outra. Quem chegou pelo
+   frango termina a página diante do smash, e vice-versa: é o momento de
+   maior interesse (a pessoa leu o cardápio inteiro) e o único ponto onde
+   a segunda marca aparece sem competir com a primeira.
+
+   O truque de tema: o bloco de variáveis lá em cima casa com o ATRIBUTO
+   `data-brand`, não com `body[data-brand]`. Marcar esta seção com
+   data-brand="hamburguinn" dentro da página do Franguinn re-tematiza toda
+   a subárvore — fundo, tinta, acento, botão — sem uma linha de CSS
+   duplicada. O contraste da virada é literalmente o tema trocando.
+   ========================================================================== */
+
+.world-switch {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+  padding-block: clamp(3rem, 2rem + 6vw, 6rem);
+}
+
+/* Costura no topo, ecoando a divisão da Home: a faixa não "começa", ela
+   atravessa para o outro lado. */
+.world-switch::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--pg-accent), var(--pg-accent-2), transparent);
+  opacity: 0.9;
+}
+
+.world-switch__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 4vw, 4rem);
+}
+
+/* ---------- Lado da arte ---------- */
+
+.world-switch__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(200px, 30vw, 300px);
+}
+
+.world-switch__glow {
+  position: absolute;
+  width: min(80%, 340px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pg-accent), transparent 68%);
+  opacity: 0.3;
+  filter: blur(48px);
+  z-index: 0;
+}
+
+/* Encolhe até a largura da foto, para o selo abaixo ancorar no canto do
+   lanche em vez do canto da coluna — que é larga e deixaria o mascote
+   boiando no vazio. */
+.world-switch__frame {
+  position: relative;
+  z-index: 1;
+  /* Largura explícita, e não inline-block: como item de grid o display é
+     blockificado (inline-block vira block) e a moldura esticava para a
+     coluna inteira, levando o selo junto para longe do lanche. */
+  width: min(100%, 340px);
+  line-height: 0;
+}
+
+.world-switch__product {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.4));
+}
+
+/* O mascote entra como selo sobreposto, não como segunda imagem solta:
+   é o rosto da marca que está sendo oferecida. */
+.world-switch__seal {
+  position: absolute;
+  right: -4%;
+  bottom: 4%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: clamp(58px, 5rem + 2vw, 88px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* Creme fixo, e não --pg-surface: no tema Hamburguinn a superfície é
+     quase preta e o mascote (vermelho escuro) desaparecia dentro dela.
+     Os dois mascotes foram desenhados sobre claro. */
+  background: #FFF3DF;
+  border: 2px solid var(--pg-accent);
+  box-shadow: var(--pg-card-shadow);
+}
+
+.world-switch__seal img {
+  width: 68%;
+  height: 68%;
+  object-fit: contain;
+}
+
+/* ---------- Lado do texto ---------- */
+
+.world-switch__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 1.3rem + 3vw, 3.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--pg-ink-strong);
+  margin-block: var(--space-3) var(--space-3);
+}
+
+.world-switch__title span {
+  color: var(--pg-accent);
+}
+
+.world-switch__text {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--pg-muted);
+  max-width: 46ch;
+  margin-bottom: var(--space-5);
+}
+
+/* ---------- Empilhado ---------- */
+
+@media (max-width: 767px) {
+  .world-switch__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+
+  /* Arte primeiro: no celular a imagem é o que faz parar a rolagem, e o
+     texto só convence depois que a pessoa parou. */
+  .world-switch__art {
+    order: -1;
+    min-height: 0;
+  }
+
+  .world-switch__frame {
+    width: min(78%, 300px);
+  }
+
+  .world-switch__text {
+    margin-inline: auto;
+  }
+
+  .world-switch__seal {
+    right: -2%;
   }
 }

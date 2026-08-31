@@ -207,14 +207,12 @@
     height: auto;
   }
 
-  .side--franguinn .side__product-img,
-  .side--franguinn .side__product-shadow {
-    transform: translateX(0);
-  }
-
-  .side--hamburguinn .side__product-img,
-  .side--hamburguinn .side__product-shadow {
-    transform: translateX(0);
+  /* Empilhado, o produto é centralizado na coluna: o desvio que equilibra a
+     composição lado a lado no desktop aqui só desalinha. Zerar a variável
+     corrige foto, sombra de chão e fatias da montagem de uma vez. */
+  .side--franguinn,
+  .side--hamburguinn {
+    --brand-shift: 0%;
   }
 
   .side__cta-wrap {

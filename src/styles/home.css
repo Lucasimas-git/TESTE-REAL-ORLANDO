@@ -128,6 +128,10 @@
    contraste do título. Paleta alinhada à referência: tons quentes creme/
    dourado à esquerda, nunca uma "parede laranja" inteira. */
 .side--franguinn {
+  /* Deslocamento horizontal da composição do produto. Vira variável para que
+     as fatias da montagem (burger-stack.js) apliquem o mesmo desvio sem
+     repetir o número, e para o mobile zerar tudo num lugar só. */
+  --brand-shift: 4%;
   color: var(--text-on-franguinn);
   background-color: #F5DDAF;
   background-image:
@@ -260,6 +264,7 @@
 /* Base cromática Hamburguinn: preto/vinho bem escuro; vermelho só como
    luz localizada perto do produto e do chão — nunca uma parede vermelha. */
 .side--hamburguinn {
+  --brand-shift: -7%;
   color: var(--text-on-hamburguinn);
   background-color: #190304;
   background-image:
@@ -457,10 +462,21 @@
   right: 0;
   bottom: 4%;
   z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  /* Grid de uma célula só, e não flex: as fatias da montagem (ver
+     burger-stack.js) precisam ocupar EXATAMENTE a mesma caixa da foto
+     base, sobrepostas. Empilhar todas na mesma grid-area faz isso sem
+     posicionamento absoluto e sem medir nada em JS — cada fatia é uma
+     cópia da imagem e recebe o mesmo dimensionamento responsivo. */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'stack';
+  align-items: end;
+  justify-items: center;
   pointer-events: none;
+}
+
+.side__product > .side__product-img {
+  grid-area: stack;
 }
 
 .side__product-glow {
@@ -496,13 +512,13 @@
 
 .side--franguinn .side__product-shadow {
   background: radial-gradient(ellipse 50% 100%, rgba(70, 34, 8, 0.5), transparent 75%);
-  transform: translateX(4%);
+  transform: translateX(var(--brand-shift));
 }
 
 .side--hamburguinn .side__product-shadow {
   width: min(44vw, 392px);
   background: radial-gradient(ellipse 50% 100%, rgba(4, 2, 2, 0.6), transparent 75%);
-  transform: translateX(-7%);
+  transform: translateX(var(--brand-shift));
 }
 
 /* Base compartilhada entre os dois produtos (mesma lógica dimensional).
@@ -525,22 +541,18 @@
 }
 
 .side--franguinn .side__product-img {
-  transform: translateX(4%);
+  transform: translateX(var(--brand-shift));
   filter: drop-shadow(0 14px 14px rgba(90, 40, 10, 0.22)) saturate(1.06) brightness(1.02);
 }
 
 .side--hamburguinn .side__product-img {
   width: clamp(292px, 35.2vw, 617px);
-  transform: translateX(-7%);
+  transform: translateX(var(--brand-shift));
   filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.4)) saturate(1.08) contrast(1.05) brightness(1.03);
 }
 
 .side__product-img:hover {
-  transform: translateX(4%) scale(1.02);
-}
-
-.side--hamburguinn .side__product-img:hover {
-  transform: translateX(-7%) scale(1.02);
+  transform: translateX(var(--brand-shift)) scale(1.02);
 }
 
 /* Marca — ancorada no canto externo, próxima do topo */
